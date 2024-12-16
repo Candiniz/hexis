@@ -1,35 +1,19 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-const Piece = ({ shape, size, scaleFactor = 1 }) => {
+const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 }); // Posição da peça
+  const [isDragging, setIsDragging] = useState(false); // Estado de arrasto
+  const pieceRef = useRef(null);
+  const dragStartRef = useRef({ x: 0, y: 0 }); // Posição inicial do mouse
+
   // Validando o tamanho
   const validSize = typeof size === "number" && !isNaN(size) ? size : 50;
   const scaledSize = validSize * scaleFactor;
-  const height = Math.sqrt(3) / 2 * scaledSize;
 
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
+  const height = (Math.sqrt(3) / 2) * scaledSize;
 
   const width = scaledSize * 3;
   const svgHeight = scaledSize * 3;
-
-  const handleDragStart = (e) => {
-    setIsDragging(true);
-    e.target.style.cursor = "grabbing";
-  };
-
-  const handleDrag = (e) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - width / 2,
-        y: e.clientY - svgHeight / 2,
-      });
-    }
-  };
-
-  const handleDragEnd = (e) => {
-    setIsDragging(false);
-    e.target.style.cursor = "grab";
-  };
 
   // Definição das formas
   const shapes = {
@@ -119,21 +103,58 @@ const Piece = ({ shape, size, scaleFactor = 1 }) => {
     ),
   };
 
+  // Inicia o arrasto
+  const handleMouseDown = (event) => {
+    setIsDragging(true);
+    dragStartRef.current = {
+      x: event.clientX - position.x,
+      y: event.clientY - position.y,
+    };
+  };
+
+  // Atualiza a posição durante o arrasto
+  const handleMouseMove = (event) => {
+    if (!isDragging) return;
+
+    const newX = event.clientX - dragStartRef.current.x;
+    const newY = event.clientY - dragStartRef.current.y;
+
+    setPosition({ x: newX, y: newY });
+
+    // Notifica a interação dos triângulos com o tabuleiro
+    if (pieceRef.current) {
+      const triangles = Array.from(pieceRef.current.querySelectorAll("path"));
+      onHover(triangles);
+    }
+  };
+
+  // Finaliza o arrasto
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging]);
+
   return (
     <div
+      ref={pieceRef}
       style={{
         position: "absolute",
         top: position.y,
         left: position.x,
         width: width,
         height: svgHeight,
-        cursor: "grab",
-        opacity: isDragging ? 0.7 : 1,
+        cursor: isDragging ? "grabbing" : "grab",
       }}
-      onMouseDown={handleDragStart}
-      onMouseMove={handleDrag}
-      onMouseUp={handleDragEnd}
-      onMouseLeave={handleDragEnd}
+      onMouseDown={handleMouseDown}
     >
       <svg width={width} height={svgHeight}>
         {shapes[shape]}
