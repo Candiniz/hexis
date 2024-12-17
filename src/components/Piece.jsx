@@ -16,7 +16,7 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
   const svgHeight = scaledSize * 3;
 
   // Definição das formas
-  const shapes = {
+  const shapesSVG = {
     lozenge: (
       <g>
         <path
@@ -65,43 +65,66 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
       <g>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#444"
+          fill="#98b68a"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#888"
+          fill="#98b68a"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#444"
+          fill="#98b68a"
           stroke="#222"
           strokeWidth="1"
         />
         <path
-          d={`M${scaledSize / 2},${height * 2} L${scaledSize},${height * 2} L0,${height * 3} Z`}
-          fill="#888"
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#98b68a"
           stroke="#222"
           strokeWidth="1"
         />
         <path
-          d={`M${scaledSize},${height * 2} L${scaledSize * 1.5},${height * 3} L${scaledSize},${height * 4} Z`}
-          fill="#444"
+          d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
           stroke="#222"
           strokeWidth="1"
         />
         <path
-          d={`M${scaledSize / 2},${height * 2} L${scaledSize},${height * 2} L${scaledSize * 1.5},${height} Z`}
-          fill="#888"
+          d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
           stroke="#222"
           strokeWidth="1"
         />
       </g>
-    ),
+    )
+
   };
+
+  const shapes = {
+    parallelogram: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: -1, y: 0 },
+    ],
+    lozenge: [
+      { x: -1, y: 0 },
+      { x: 0, y: 0 },
+    ],
+    hexagon: [
+      { x: -1, y: 0 },
+      { x: -3, y: 0 },
+      { x: -2, y: 0 },
+      { x: 0, y: 1 },
+      { x: -2, y: 1 },
+      { x: -1, y: 1 },
+    ],
+  };
+
 
   // Inicia o arrasto
   const handleMouseDown = (event) => {
@@ -121,11 +144,14 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
 
     setPosition({ x: newX, y: newY });
 
-    // Notifica a interação dos triângulos com o tabuleiro
-    if (pieceRef.current) {
-      const triangles = Array.from(pieceRef.current.querySelectorAll("path"));
-      onHover(triangles);
-    }
+    const centerX = newX + width / 2;
+    const centerY = newY + scaledSize / 2;
+
+    // Notifica o formato e o ponto central
+    onHover({
+      center: { x: centerX, y: centerY },
+      shape: shapes[shape], // Formato dinâmico da peça
+    });
   };
 
   // Finaliza o arrasto
@@ -156,8 +182,8 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
       }}
       onMouseDown={handleMouseDown}
     >
-      <svg width={width} height={svgHeight}>
-        {shapes[shape]}
+      <svg className="svg">
+        {shapesSVG[shape]}
       </svg>
     </div>
   );

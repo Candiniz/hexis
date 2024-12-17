@@ -19,26 +19,26 @@ const Board = () => {
         const triangles = [];
         let yOffset = 0; // Deslocamento vertical para cada fileira
         let xOffset = 0; // Deslocamento horizontal, será ajustado conforme a fileira
-    
+
         triangleCounts.forEach((count, rowIndex) => {
             const rowWidth = count * (size / 2); // Largura total da fileira
             const rowCenterOffset = (triangleCounts[4] * size) / 2 - rowWidth / 2; // Centraliza a fileira baseada na maior fileira
-    
+
             xOffset = rowCenterOffset; // Ajusta o xOffset de acordo com a centralização
-    
+
             for (let colIndex = 0; colIndex < count; colIndex++) {
                 const shouldInvert = count === 11 || count === 15;
                 const isUp = shouldInvert
                     ? (rowIndex + colIndex) % 2 !== 0 // Inverte o padrão
                     : (rowIndex + colIndex) % 2 === 0; // Padrão original
-                    
+
                 const x1 = xOffset + colIndex * (size / 2); // Posição x1 do triângulo
                 const x2 = x1 + size; // Posição x2 do triângulo
                 const yBase = yOffset; // Posição y da fileira
-    
+
                 const uniqueIndex = `${rowIndex}-${colIndex}`; // Identificador único do triângulo
                 const isHighlighted = highlightedTriangles.includes(uniqueIndex); // Verifica se o triângulo deve ser destacado
-    
+
                 triangles.push(
                     <polygon
                         key={uniqueIndex}
@@ -54,15 +54,15 @@ const Board = () => {
                     />
                 );
             }
-    
+
             yOffset += height; // Ajuste para a próxima fileira (aumenta a altura a cada iteração)
         });
-    
+
         return triangles;
     };
 
-    // Função de colisão
-    const handlePieceHover = (pieceTriangles) => {
+    // Função de colisão atualizada para considerar apenas o ponto central
+    const handlePieceHover = ({ center, shape }) => {
         const boardTriangles = Array.from(
             boardRef.current.querySelectorAll(".triangles")
         ).map((triangle) => {
@@ -71,23 +71,35 @@ const Board = () => {
             return { rect, uniqueIndex };
         });
 
-        const collidedTriangles = [];
-        pieceTriangles.forEach((pieceTriangle) => {
-            const pieceRect = pieceTriangle.getBoundingClientRect();
-            boardTriangles.forEach(({ rect, uniqueIndex }) => {
-                if (
-                    pieceRect.left < rect.right &&
-                    pieceRect.right > rect.left &&
-                    pieceRect.top < rect.bottom &&
-                    pieceRect.bottom > rect.top
-                ) {
-                    collidedTriangles.push(uniqueIndex);
-                }
-            });
+        // Encontrar o triângulo central
+        const centralTriangle = boardTriangles.find(({ rect }) => {
+            return (
+                center.x > rect.left &&
+                center.x < rect.right &&
+                center.y > rect.top &&
+                center.y < rect.bottom
+            );
         });
 
-        setHighlightedTriangles(collidedTriangles); // Atualiza o estado
+        if (!centralTriangle) {
+            setHighlightedTriangles([]); // Nenhuma interação
+            return;
+        }
+
+        // Determinar os triângulos baseados no padrão
+        const [centralRow, centralCol] = centralTriangle.uniqueIndex.split("-").map(Number);
+
+        const trianglesToHighlight = shape.map(({ x, y }) => {
+            const targetRow = centralRow + y;
+            const targetCol = centralCol + x;
+            return `${targetRow}-${targetCol}`; // Índice único
+        });
+
+        setHighlightedTriangles(trianglesToHighlight);
     };
+
+
+
 
     return (
         <>
@@ -103,7 +115,7 @@ const Board = () => {
 
             {/* Adiciona uma peça de exemplo */}
             <Piece
-                shape="parallelogram"
+                shape="hexagon"
                 size={size}
                 scaleFactor={1}
                 onHover={(triangles) => handlePieceHover(triangles)}

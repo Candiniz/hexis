@@ -21,10 +21,18 @@ body {
   height: 100vh;
 }
 
+.svg {
+  overflow: visible;
+  width: 50px;
+  height: 50px;
+  margin: auto;
+  opacity: 50%;
+}
+
 .triangles {
   fill: #444;
 }
 
 .highlighted {
-  fill: rgb(164, 92, 92) !important;  /* Destaque com a cor vermelha */
+  fill: rgb(255, 255, 255) !important;  /* Destaque com a cor vermelha */
 }
