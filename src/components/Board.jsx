@@ -49,7 +49,8 @@ const Board = () => {
                         }
                         stroke="#222"
                         strokeWidth="1"
-                        className={`triangles ${isHighlighted ? "highlighted" : ""}`}
+                        className={`triangles ${isUp ? "up" : "down"} ${isHighlighted ? "highlighted" : ""
+                            }`}
                         data-unique-index={uniqueIndex}
                     />
                 );
@@ -68,10 +69,10 @@ const Board = () => {
         ).map((triangle) => {
             const rect = triangle.getBoundingClientRect();
             const uniqueIndex = triangle.getAttribute("data-unique-index");
-            return { rect, uniqueIndex };
+            const isUp = triangle.classList.contains("up"); // Verifica a classe "up" ou "down"
+            return { rect, uniqueIndex, isUp };
         });
 
-        // Encontrar o triângulo central
         const centralTriangle = boardTriangles.find(({ rect }) => {
             return (
                 center.x > rect.left &&
@@ -82,21 +83,51 @@ const Board = () => {
         });
 
         if (!centralTriangle) {
-            setHighlightedTriangles([]); // Nenhuma interação
+            setHighlightedTriangles([]);
             return;
         }
 
-        // Determinar os triângulos baseados no padrão
-        const [centralRow, centralCol] = centralTriangle.uniqueIndex.split("-").map(Number);
+        const [centralRow, centralCol] = centralTriangle.uniqueIndex
+            .split("-")
+            .map(Number);
 
-        const trianglesToHighlight = shape.map(({ x, y }) => {
+        const trianglesToHighlight = shape.map(({ x, y, orientation }) => {
             const targetRow = centralRow + y;
-            const targetCol = centralCol + x;
-            return `${targetRow}-${targetCol}`; // Índice único
+
+
+            const shouldApplyRowOffset = targetRow >= 4;
+
+            // Calcula o deslocamento horizontal somente se necessário
+            let rowOffset = shouldApplyRowOffset
+                ? (triangleCounts[centralRow] - triangleCounts[targetRow]) / 1 || 0
+                : 0;
+            if (centralRow === 3) {
+                rowOffset = 0; // Não aplica deslocamento horizontal
+            }
+            
+
+            // Aplica o deslocamento ao calcular o targetCol
+            const targetCol = centralCol + x - rowOffset;
+
+            // Busca o triângulo correspondente
+            const targetTriangle = boardTriangles.find(
+                ({ uniqueIndex }) => uniqueIndex === `${targetRow}-${targetCol}`
+            );
+            
+
+            // Verifica a orientação (up/down)
+            if (targetTriangle && targetTriangle.isUp === (orientation === "up")) {
+                return `${targetRow}-${targetCol}`;
+            }
+            return null;
         });
 
-        setHighlightedTriangles(trianglesToHighlight);
+
+        // Filtra nulos e atualiza os destaques
+        setHighlightedTriangles(trianglesToHighlight.filter(Boolean));
     };
+
+
 
 
 
