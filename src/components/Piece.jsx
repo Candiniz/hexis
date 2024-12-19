@@ -171,13 +171,12 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
 
   return (
     <div
+    className="svg-container"
       ref={pieceRef}
       style={{
         position: "absolute",
         top: position.y,
         left: position.x,
-        width: width,
-        height: svgHeight,
         cursor: isDragging ? "grabbing" : "grab",
       }}
       onMouseDown={handleMouseDown}

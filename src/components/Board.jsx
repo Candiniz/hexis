@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import Piece from "./Piece";
 
-
 const Board = () => {
     const [highlightedTriangles, setHighlightedTriangles] = useState([]); // Destaques
     const boardRef = useRef(null);
@@ -18,13 +17,13 @@ const Board = () => {
     const generateTriangles = () => {
         const triangles = [];
         let yOffset = 0; // Deslocamento vertical para cada fileira
-        let xOffset = 0; // Deslocamento horizontal, será ajustado conforme a fileira
+        let xOffset = 0; // Deslocamento horizontal
 
         triangleCounts.forEach((count, rowIndex) => {
             const rowWidth = count * (size / 2); // Largura total da fileira
-            const rowCenterOffset = (triangleCounts[4] * size) / 2 - rowWidth / 2; // Centraliza a fileira baseada na maior fileira
+            const rowCenterOffset = (triangleCounts[4] * size) / 2 - rowWidth / 2; // Centraliza a fileira com base na fileira central
 
-            xOffset = rowCenterOffset; // Ajusta o xOffset de acordo com a centralização
+            xOffset = rowCenterOffset; // Ajusta o xOffset de acordo com a centralização da fileira
 
             for (let colIndex = 0; colIndex < count; colIndex++) {
                 const shouldInvert = count === 11 || count === 15;
@@ -38,6 +37,7 @@ const Board = () => {
 
                 const uniqueIndex = `${rowIndex}-${colIndex}`; // Identificador único do triângulo
                 const isHighlighted = highlightedTriangles.includes(uniqueIndex); // Verifica se o triângulo deve ser destacado
+                // console.log(`Row: ${rowIndex}, Col: ${colIndex}, Index: ${uniqueIndex}`);
 
                 triangles.push(
                     <polygon
@@ -49,21 +49,23 @@ const Board = () => {
                         }
                         stroke="#222"
                         strokeWidth="1"
-                        className={`triangles ${isUp ? "up" : "down"} ${isHighlighted ? "highlighted" : ""
-                            }`}
+                        className={`triangles ${isUp ? "up" : "down"} ${isHighlighted ? "highlighted" : ""}`}
                         data-unique-index={uniqueIndex}
                     />
                 );
             }
 
-            yOffset += height; // Ajuste para a próxima fileira (aumenta a altura a cada iteração)
+            yOffset += height; // Ajuste para a próxima fileira
         });
 
         return triangles;
     };
 
-    // Função de colisão atualizada para considerar apenas o ponto central
+
+    // Função de colisão atualizada para considerar o cálculo da posição de peças maiores
     const handlePieceHover = ({ center, shape }) => {
+
+
         const boardTriangles = Array.from(
             boardRef.current.querySelectorAll(".triangles")
         ).map((triangle) => {
@@ -72,6 +74,7 @@ const Board = () => {
             const isUp = triangle.classList.contains("up"); // Verifica a classe "up" ou "down"
             return { rect, uniqueIndex, isUp };
         });
+
 
         const centralTriangle = boardTriangles.find(({ rect }) => {
             return (
@@ -90,42 +93,73 @@ const Board = () => {
         const [centralRow, centralCol] = centralTriangle.uniqueIndex
             .split("-")
             .map(Number);
+        // console.log(centralTriangle.uniqueIndex)
 
-        const trianglesToHighlight = shape.map(({ x, y, orientation }) => {
-            const targetRow = centralRow + y;
+        const triangleMap = new Map(boardTriangles.map(triangle => [triangle.uniqueIndex, triangle]));
+        const trianglesToHighlight = shape.map(({ x, y, orientation, uniqueIndex }) => {
+
+            // Função para verificar se o uniqueIndex pertence à região nordeste
+            function isNordeste(uniqueIndex) {
+                const [row, col] = centralTriangle.uniqueIndex.split('-').map(Number);
+
+                return (row === 0 && col >= 8) ||
+                    (row === 1 && col >= 10) ||
+                    (row === 2 && col >= 12) ||
+                    (row === 3 && col >= 14);
+            }
+
+            // Definindo a lógica de cálculo do targetRow com base na região
+            let targetRow;
+            if (isNordeste(uniqueIndex)) {
+                targetRow = centralRow + y;
+                console.log(targetRow)
+            } else {
+                targetRow = centralRow + y;
+                console.log(targetRow)
+            }
+
+
+            let targetCol;
+
+            if (
+                shape.some(triangle => triangle.y === 0) &&
+                shape.some(triangle => triangle.y === 1)) {
+
+                targetCol = centralCol + x - ((targetRow >= 0 && targetRow < triangleCounts.length)
+                    ? Math.floor((triangleCounts[centralRow] - triangleCounts[targetRow]) / 2 - 1)
+                    : 0);
+            } else {
+                targetCol = centralCol + x - ((targetRow >= 0 && targetRow < triangleCounts.length)
+                    ? Math.floor((triangleCounts[centralRow] - triangleCounts[targetRow]) / 2)
+                    : 0);
+            }
 
 
 
-            // Determina o deslocamento com base na posição do hexágono
-            const rowOffset =
-                 (triangleCounts[centralRow] - triangleCounts[targetRow]) / 2 || 0
+            if (
+                targetRow >= 0 &&
+                targetRow < triangleCounts.length &&
+                targetCol >= 0 &&
+                targetCol < triangleCounts[targetRow]
+            ) {
+                const targetTriangle = triangleMap.get(`${targetRow}-${targetCol}`);
 
-
-            // Ajusta o targetCol com base no deslocamento
-            const targetCol = centralCol + x - rowOffset;
-
-            // Busca o triângulo correspondente
-            const targetTriangle = boardTriangles.find(
-                ({ uniqueIndex }) => uniqueIndex === `${targetRow}-${targetCol}`
-            );
-
-
-            // Verifica a orientação (up/down)
-            if (targetTriangle && targetTriangle.isUp === (orientation === "up")) {
-                return `${targetRow}-${targetCol}`;
+                if (targetTriangle && targetTriangle.isUp === (orientation === "up")) {
+                    return `${targetRow}-${targetCol}`;
+                }
             }
             return null;
         });
 
+        if (trianglesToHighlight.some(item => item === null)) {
+            setHighlightedTriangles([]);
+            return
+        }
 
         // Filtra nulos e atualiza os destaques
         setHighlightedTriangles(trianglesToHighlight.filter(Boolean));
+        // console.log("Triangles to highlight:", trianglesToHighlight);
     };
-
-
-
-
-
 
     return (
         <>
@@ -138,10 +172,9 @@ const Board = () => {
                 </svg>
             </div>
 
-
             {/* Adiciona uma peça de exemplo */}
             <Piece
-                shape="hexagon"
+                shape="hexagon" // Peça de exemplo
                 size={size}
                 scaleFactor={1}
                 onHover={(triangles) => handlePieceHover(triangles)}
