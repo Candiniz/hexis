@@ -117,11 +117,11 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
     ],
     hexagon: [
       { x: -1, y: 0, orientation: "up" },
-      { x: -3, y: 0, orientation: "up" },
       { x: -2, y: 0, orientation: "down" },
-      { x: 0, y: 1, orientation: "down" },
-      { x: -2, y: 1, orientation: "down" },
-      { x: -1, y: 1, orientation: "up" },
+      { x: -3, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: -2, y: 1, orientation: "up" },
+      { x: -3, y: 1, orientation: "down" },
     ],
   };
 

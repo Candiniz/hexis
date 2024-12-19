@@ -95,25 +95,20 @@ const Board = () => {
             const targetRow = centralRow + y;
 
 
-            const shouldApplyRowOffset = targetRow >= 4;
 
-            // Calcula o deslocamento horizontal somente se necessário
-            let rowOffset = shouldApplyRowOffset
-                ? (triangleCounts[centralRow] - triangleCounts[targetRow]) / 1 || 0
-                : 0;
-            if (centralRow === 3) {
-                rowOffset = 0; // Não aplica deslocamento horizontal
-            }
-            
+            // Determina o deslocamento com base na posição do hexágono
+            const rowOffset =
+                 (triangleCounts[centralRow] - triangleCounts[targetRow]) / 2 || 0
 
-            // Aplica o deslocamento ao calcular o targetCol
+
+            // Ajusta o targetCol com base no deslocamento
             const targetCol = centralCol + x - rowOffset;
 
             // Busca o triângulo correspondente
             const targetTriangle = boardTriangles.find(
                 ({ uniqueIndex }) => uniqueIndex === `${targetRow}-${targetCol}`
             );
-            
+
 
             // Verifica a orientação (up/down)
             if (targetTriangle && targetTriangle.isUp === (orientation === "up")) {
