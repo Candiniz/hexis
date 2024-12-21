@@ -31,6 +31,102 @@ const Piece = ({
 
   // Definição das formas
   const shapesSVG = {
+    trapezoid1: (
+      <g className={styles.paralelogramo2}
+        transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
+        <path
+          d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    trapezoid2: (
+      <g className={styles.paralelogramo2}
+        transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize * 2},0 L${scaledSize * 2.5},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    trapezoid1_vertical: (
+      <g className={styles.paralelogramoVertical}>
+
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    trapezoid2_vertical: (
+      <g
+        className={styles.paralelogramoVerticalFlipped}
+        transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`} // Espelha horizontalmente
+      >
+        <path
+          d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+  
+      </g>
+    ),
+
     lozenge1: (
       <g className={styles.lozango1}>
         <path
@@ -64,6 +160,23 @@ const Piece = ({
         />
       </g>
     ),
+    lozenge3: (
+      <g className={styles.hexagono}>
+        <path
+          d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#658f4f"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#658f4f"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+
     parallelogram1: (
       <g className={styles.paralelogramo1}>
         <path
@@ -116,6 +229,65 @@ const Piece = ({
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize * 2},0 L${scaledSize * 2.5},${height} Z`}
           fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    parallelogram1_vertical: (
+      <g className={styles.paralelogramoVertical}>
+        <path
+          d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    parallelogram2_vertical: (
+      <g
+        className={styles.paralelogramoVerticalFlipped}
+        transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`} // Espelha horizontalmente
+      >
+        <path
+          d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#98b68a"
           stroke="#222"
           strokeWidth="1"
         />
@@ -305,6 +477,30 @@ const Piece = ({
   };
 
   const shapes = {
+    trapezoid1: [
+      { x: -1, y: 0, orientation: "down" },
+      { x: 0, y: 0, orientation: "up" },
+      { x: 1, y: 0, orientation: "down" },
+
+    ],
+    trapezoid2: [
+
+      { x: 0, y: 0, orientation: "up" },
+      { x: 1, y: 0, orientation: "down" },
+      { x: 2, y: 0, orientation: "up" },
+    ],
+    trapezoid1_vertical: [
+
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: -2, y: 1, orientation: "up" },
+    ],
+    trapezoid2_vertical: [
+      { x: -2, y: 0, orientation: "down" },
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+
+    ],
     parallelogram1: [
       { x: -1, y: 0, orientation: "down" },
       { x: 0, y: 0, orientation: "up" },
@@ -317,6 +513,18 @@ const Piece = ({
       { x: -1, y: 0, orientation: "down" },
       { x: -2, y: 0, orientation: "up" },
     ],
+    parallelogram1_vertical: [
+      { x: 0, y: 0, orientation: "down" },
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: -2, y: 1, orientation: "up" },
+    ],
+    parallelogram2_vertical: [
+      { x: -2, y: 0, orientation: "down" },
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: 0, y: 1, orientation: "up" },
+    ],
     lozenge1: [
       { x: -1, y: 0, orientation: "down" },
       { x: 0, y: 0, orientation: "up" },
@@ -324,6 +532,10 @@ const Piece = ({
     lozenge2: [
       { x: 1, y: 0, orientation: "down" },
       { x: 0, y: 0, orientation: "up" },
+    ],
+    lozenge3: [
+      { x: -3, y: 0, orientation: "up" },
+      { x: -3, y: 1, orientation: "down" },
     ],
     hexagon: [
       { x: -1, y: 0, orientation: "up" },

@@ -12,6 +12,7 @@ const Board = () => {
     const [resetKey, setResetKey] = useState(0);
     const [animatedPieces, setAnimatedPieces] = useState([]);
     const [newPieces, setNewPieces] = useState([]);
+    const [score, setScore] = useState(0);
 
     const scale = 0.8; // Escala do tabuleiro
     const size = 50 * scale; // Tamanho do triângulo
@@ -22,11 +23,18 @@ const Board = () => {
     const triangleCounts = [9, 11, 13, 15, 15, 13, 11, 9]; // Cresce até o meio e diminui
 
     const shapes = [
+        "trapezoid1",
+        "trapezoid2",
+        "trapezoid1_vertical",
+        "trapezoid2_vertical",
         "hexagon",
         "lozenge1",
         "lozenge2",
+        "lozenge3",
         "parallelogram1",
         "parallelogram2",
+        "parallelogram1_vertical",
+        "parallelogram2_vertical",
         "semiHexagon1",
         "semiHexagon2",
         "semiHexagon3",
@@ -35,11 +43,18 @@ const Board = () => {
     ];
 
     const shapeColors = {
-        hexagon: "#98b68a",
         lozenge1: "#ab5656",
         lozenge2: "#aba356",
+        lozenge3: "#658f4f",
+        trapezoid1: "#98b68a",
+        trapezoid2: "#98b68a",
+        trapezoid1_vertical: "#98b68a",
+        trapezoid2_vertical: "#98b68a",
+        hexagon: "#98b68a",
         parallelogram1: "#598e8a",
         parallelogram2: "#59658e",
+        parallelogram1_vertical: "#59658e",
+        parallelogram2_vertical: "#59658e",
         semiHexagon1: "#b269b9",
         semiHexagon2: "#a17cba",
         semiHexagon3: "#b68aa3",
@@ -80,9 +95,21 @@ const Board = () => {
                 return acc;
             }, {});
 
-            setDroppedTriangleColors((prev) => ({ ...prev, ...newColors }));
+            // Atualiza as cores dos triângulos dropados e verifica linhas completas imediatamente após isso
+            setDroppedTriangleColors((prevColors) => {
+                const updatedColors = { ...prevColors, ...newColors };
+
+                // Verifica linhas completas usando o estado atualizado
+                checkForCompleteLines(updatedColors);
+
+                return updatedColors;
+            });
+
+            // Atualiza a lista de triângulos que foram dropados
             setDroppedTriangles((prev) => [...prev, ...highlightedTriangles]);
             setHighlightedTriangles([]);
+
+            // Remove a peça da lista
             setPieceShapes((prevShapes) => {
                 const updatedShapes = [...prevShapes];
                 updatedShapes[index] = null; // Remove a peça
@@ -92,9 +119,49 @@ const Board = () => {
         } else {
             // Se a peça não foi dropada em uma área válida, volta para a posição original
             setResetKey((prevKey) => prevKey + 1);
-        
         }
-    }
+    };
+
+
+    // Função para verificar se uma linha, coluna ou diagonal foi completada
+    const checkForCompleteLines = (currentColors) => {
+        let completedLines = 0;
+
+        // Função para resetar as cores e o estado dos triângulos completados
+        const resetCompletedTriangles = (triangles) => {
+            setDroppedTriangleColors((prevColors) => {
+                const resetColors = { ...prevColors };
+                triangles.forEach((index) => {
+                    delete resetColors[index]; // Remove a cor associada ao triângulo
+                });
+                return resetColors; // Atualiza o estado com as cores resetadas
+            });
+
+            setDroppedTriangles((prevTriangles) =>
+                prevTriangles.filter((index) => !triangles.includes(index))
+            ); // Remove os triângulos resetados da lista de triângulos dropados
+        };
+
+        // Verifica linhas horizontais (rows)
+        for (let row = 0; row < rows; row++) {
+            const rowIndex = Array.from({ length: triangleCounts[row] }, (_, colIndex) => `${row}-${colIndex}`);
+
+            // Verifica se todos os triângulos dessa linha têm cor
+            if (rowIndex.every((index) => currentColors[index])) {
+                completedLines += 1; // Contabiliza a linha completa
+                resetCompletedTriangles(rowIndex); // Resetar os triângulos dessa linha
+            }
+        }
+
+        // Atualiza a pontuação se houver linhas completas
+        if (completedLines > 0) {
+            setScore((prevScore) => prevScore + completedLines * 10); // Atribui pontos para cada linha completa
+        }
+    };
+
+
+
+
 
 
     // Gera os triângulos
@@ -265,13 +332,13 @@ const Board = () => {
                 .filter((index) => index !== null);
             return [...prev, ...newIndices];
         });
-    }, [pieceShapes]);   
+    }, [pieceShapes]);
     useEffect(() => {
         if (newPieces.length > 0) {
             const timeout = setTimeout(() => setNewPieces([]), 300); // Limpa após 300ms
             return () => clearTimeout(timeout);
         }
-    }, [newPieces]); 
+    }, [newPieces]);
 
     // Atualiza o estado isMobile com base na largura da tela
     useEffect(() => {
@@ -321,6 +388,9 @@ const Board = () => {
                         />
                     );
                 })}
+            </div>
+            <div className="scoreboard">
+                <h3>Score: {score}</h3>
             </div>
         </>
     );
