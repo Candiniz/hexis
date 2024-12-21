@@ -15,25 +15,29 @@ body {
 
 
 .container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  width: 100vw;
 }
 
-.svg-container{
+.boardDiv {
+  position: absolute;
+}
+
+.svg-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: auto;
+  height: auto;
 }
 
 .svg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: auto;
+  height: auto;
   overflow: visible;
-  width: 100px;
-  height: 100px;
   margin: auto;
 }
 
@@ -42,5 +46,38 @@ body {
 }
 
 .highlighted {
-  fill: rgb(255, 255, 255) !important;  /* Destaque com a cor vermelha */
+  fill: rgb(255, 255, 255) !important;
+  /* Destaque com a cor vermelha */
 }
+
+.triangles.dropped {
+  fill: #a15353;
+  cursor: not-allowed;
+}
+
+
+.piece_container {
+  position: absolute;
+  top: 80px;
+  left: 150px;
+}
+
+@media (max-width: 800px) {
+  .piece_container {
+    position: absolute;
+    top: 80px;
+    left: 50px;
+    height: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .piece_container {
+    position: absolute;
+    top: auto;
+    left: 10px;
+    bottom: 150px;
+    height: auto;
+  }
+}
+

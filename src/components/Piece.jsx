@@ -1,6 +1,17 @@
 import { useState, useRef, useEffect } from "react";
+import styles from './Piece.module.css';
 
-const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
+const Piece = ({
+  shape,
+  size,
+  scaleFactor = 1,
+  onHover,
+  onDrop,
+  index,
+  pieceIndex,
+  positionY,
+  positionX,
+}) => {
   const [position, setPosition] = useState({ x: 0, y: 0 }); // Posição da peça
   const [isDragging, setIsDragging] = useState(false); // Estado de arrasto
   const pieceRef = useRef(null);
@@ -11,14 +22,12 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
   const scaledSize = validSize * scaleFactor;
 
   const height = (Math.sqrt(3) / 2) * scaledSize;
-
   const width = scaledSize * 3;
-  const svgHeight = scaledSize * 3;
 
   // Definição das formas
   const shapesSVG = {
-    lozenge: (
-      <g>
+    lozenge1: (
+      <g className={styles.lozango1}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
           fill="#ab5656"
@@ -33,8 +42,25 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
         />
       </g>
     ),
-    parallelogram: (
-      <g>
+    lozenge2: (
+      <g className={styles.lozango2}
+        transform={`scale(-1, 1) translate(-${scaledSize * 1.5}, 0)`}>
+        <path
+          d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
+          fill="#aba356"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#aba356"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    parallelogram1: (
+      <g className={styles.paralelogramo1}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
           fill="#598e8a"
@@ -61,8 +87,37 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
         />
       </g>
     ),
+    parallelogram2: (
+      <g className={styles.paralelogramo2}
+        transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
+        <path
+          d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize * 2},0 L${scaledSize * 2.5},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
     hexagon: (
-      <g>
+      <g className={styles.hexagono}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
           fill="#98b68a"
@@ -100,19 +155,169 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
           strokeWidth="1"
         />
       </g>
-    )
+    ),
+    semiHexagon1: (
+      <g className={styles.hexagono}>
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#b269b9"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#b269b9"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#b269b9"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#b269b9"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    semiHexagon2: (
+      <g className={styles.hexagono}>
+        <path
+          d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
+          fill="#a17cba"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#a17cba"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#a17cba"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#a17cba"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    semiHexagon3: (
+      <g className={styles.hexagono}>
+        <path
+          d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
+          fill="#b68aa3"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#b68aa3"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#b68aa3"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#b68aa3"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    semiHexagon4: (
+      <g className={styles.hexagono}>
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    semiHexagon5: (
+      <g className={styles.hexagono}>
+        <path
+          d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
+          fill="#8b8ab6"
+          stroke="#222"
+          strokeWidth="1"
+        />
 
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#8b8ab6"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#8b8ab6"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
+          fill="#8b8ab6"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
   };
 
   const shapes = {
-    parallelogram: [
-    { x: 0, y: 0, orientation: "up" },
-    { x: 1, y: 0, orientation: "down" },
-    { x: 2, y: 0, orientation: "up" },
-    { x: -1, y: 0, orientation: "down" },
-  ],
-    lozenge: [
+    parallelogram1: [
       { x: -1, y: 0, orientation: "down" },
+      { x: 0, y: 0, orientation: "up" },
+      { x: 1, y: 0, orientation: "down" },
+      { x: 2, y: 0, orientation: "up" },
+    ],
+    parallelogram2: [
+      { x: 1, y: 0, orientation: "down" },
+      { x: -0, y: 0, orientation: "up" },
+      { x: -1, y: 0, orientation: "down" },
+      { x: -2, y: 0, orientation: "up" },
+    ],
+    lozenge1: [
+      { x: -1, y: 0, orientation: "down" },
+      { x: 0, y: 0, orientation: "up" },
+    ],
+    lozenge2: [
+      { x: 1, y: 0, orientation: "down" },
       { x: 0, y: 0, orientation: "up" },
     ],
     hexagon: [
@@ -123,10 +328,41 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
       { x: -2, y: 1, orientation: "up" },
       { x: -3, y: 1, orientation: "down" },
     ],
+    semiHexagon1: [
+      { x: -3, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: -2, y: 1, orientation: "up" },
+      { x: -3, y: 1, orientation: "down" },
+    ],
+    semiHexagon2: [
+      { x: -1, y: 0, orientation: "up" },
+      { x: -2, y: 0, orientation: "down" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: -2, y: 1, orientation: "up" },
+
+    ],
+    semiHexagon3: [
+      { x: -1, y: 0, orientation: "up" },
+      { x: -2, y: 0, orientation: "down" },
+      { x: -3, y: 0, orientation: "up" },
+      { x: -3, y: 1, orientation: "down" },
+    ],
+    semiHexagon4: [
+      { x: -1, y: 0, orientation: "up" },
+
+
+      { x: -1, y: 1, orientation: "down" },
+      { x: -2, y: 1, orientation: "up" },
+      { x: -3, y: 1, orientation: "down" },
+    ],
+    semiHexagon5: [
+      { x: -2, y: 0, orientation: "down" },
+      { x: -3, y: 0, orientation: "up" },
+      { x: -2, y: 1, orientation: "up" },
+      { x: -3, y: 1, orientation: "down" },
+    ],
   };
 
-
-  // Inicia o arrasto
   const handleMouseDown = (event) => {
     setIsDragging(true);
     dragStartRef.current = {
@@ -135,7 +371,6 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
     };
   };
 
-  // Atualiza a posição durante o arrasto
   const handleMouseMove = (event) => {
     if (!isDragging) return;
 
@@ -144,19 +379,44 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
 
     setPosition({ x: newX, y: newY });
 
-    const centerX = newX + width / 2;
-    const centerY = newY + scaledSize / 2;
+    const { top, left, width, height } = pieceRef.current.getBoundingClientRect();
 
-    // Notifica o formato e o ponto central
+    // Obtemos a transformação do elemento pai, se houver
+    const groupElement = pieceRef.current.parentElement;
+    const transform = window.getComputedStyle(groupElement).transform;
+
+    let centerX, centerY;
+
+    const hasYOne = shapes[shape].some((point) => point.y === 1);
+
+    if (hasYOne) {
+      const matrix = new DOMMatrix(transform); // Cria a matriz de transformação
+      centerX = left + width / 2 + 45 + matrix.e;  // Ajusta o centro considerando a transformação
+      centerY = top + height / 2 - 15 + matrix.f;
+    } else {
+      // Caso não tenha transformação, usamos as coordenadas do bounding rect
+   const matrix = new DOMMatrix(transform); // Cria a matriz de transformação
+      centerX = left + width / 2 + matrix.e;
+      centerY = top + height / 2 + matrix.f;
+    }
+
+    // Aplique aqui qualquer ajuste extra para corrigir o deslocamento
+    // Por exemplo, você pode tentar uma compensação de pixels manual para corrigir
+
     onHover({
-      center: { x: centerX, y: centerY },
-      shape: shapes[shape], // Formato dinâmico da peça
+      center: { x: centerX, y: centerY},
+      shape: shapes[shape],
     });
   };
 
-  // Finaliza o arrasto
+
+
   const handleMouseUp = () => {
     setIsDragging(false);
+
+    if (onDrop) {
+      onDrop(index);
+    }
   };
 
   useEffect(() => {
@@ -171,17 +431,24 @@ const Piece = ({ shape, size, scaleFactor = 1, onHover }) => {
 
   return (
     <div
-    className="svg-container"
+      className="svg-container"
       ref={pieceRef}
       style={{
         position: "absolute",
-        top: position.y,
-        left: position.x,
+        top: position.y + positionY,
+        left: position.x + positionX,
         cursor: isDragging ? "grabbing" : "grab",
       }}
       onMouseDown={handleMouseDown}
     >
-      <svg className="svg">
+      <svg
+        className="svg"
+        onMouseUp={handleMouseUp}
+        viewBox={`${-scaledSize / 2} ${-height / 2} ${scaledSize * 2.5} ${height * 2}`}
+        style={{
+          width: scaledSize * 2.5,
+        }}
+      >
         {shapesSVG[shape]}
       </svg>
     </div>

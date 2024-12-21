@@ -1,0 +1,15 @@
+.paralelogramo1 {
+    transform: translate(-15px);
+}
+
+.paralelogramo2 {}
+
+.lozango1 {
+    transform: translate(5px);
+}
+
+.lozango2 {}
+
+.hexagono {
+    transform: translate(20px, -18px);
+}
