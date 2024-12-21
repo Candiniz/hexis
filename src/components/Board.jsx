@@ -9,7 +9,6 @@ const Board = () => {
     const [pieceShapes, setPieceShapes] = useState([]);
     const [droppedTriangles, setDroppedTriangles] = useState([]);
     const [droppedTriangleColors, setDroppedTriangleColors] = useState({});
-    const [piecePositions, setPiecePositions] = useState([]);
     const [resetKey, setResetKey] = useState(0);
 
 
@@ -87,9 +86,12 @@ const Board = () => {
                 return updatedShapes;
             });
             setResetKey((prevKey) => prevKey + 1);
+        } else {
+            // Se a peça não foi dropada em uma área válida, volta para a posição original
+            setResetKey((prevKey) => prevKey + 1);
+        
         }
-    };
-
+    }
 
 
     // Gera os triângulos
