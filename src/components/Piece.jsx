@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useRef, useEffect } from "react";
 import styles from './Piece.module.css';
+import { motion } from "framer-motion";
 
 const Piece = ({
   shape,
@@ -8,12 +10,16 @@ const Piece = ({
   onHover,
   onDrop,
   index,
+  isNew,
   pieceIndex,
   positionY,
   positionX,
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 }); // Posição da peça
   const [isDragging, setIsDragging] = useState(false); // Estado de arrasto
+  const [draggingStates, setDraggingStates] = useState([]);
+
+
   const pieceRef = useRef(null);
   const dragStartRef = useRef({ x: 0, y: 0 }); // Posição inicial do mouse
 
@@ -22,7 +28,6 @@ const Piece = ({
   const scaledSize = validSize * scaleFactor;
 
   const height = (Math.sqrt(3) / 2) * scaledSize;
-  const width = scaledSize * 3;
 
   // Definição das formas
   const shapesSVG = {
@@ -365,17 +370,15 @@ const Piece = ({
 
   const handleMouseDown = (event) => {
     setIsDragging(true);
-    dragStartRef.current = {
-      x: event.clientX - position.x,
-      y: event.clientY - position.y,
-    };
+    pieceRef.current.dragStartX = event.clientX - position.x;
+    pieceRef.current.dragStartY = event.clientY - position.y;
   };
 
   const handleMouseMove = (event) => {
     if (!isDragging) return;
 
-    const newX = event.clientX - dragStartRef.current.x;
-    const newY = event.clientY - dragStartRef.current.y;
+    const newX = event.clientX - pieceRef.current.dragStartX;
+    const newY = event.clientY - pieceRef.current.dragStartY;
 
     setPosition({ x: newX, y: newY });
 
@@ -395,7 +398,7 @@ const Piece = ({
       centerY = top + height / 2 - 15 + matrix.f;
     } else {
       // Caso não tenha transformação, usamos as coordenadas do bounding rect
-   const matrix = new DOMMatrix(transform); // Cria a matriz de transformação
+      const matrix = new DOMMatrix(transform); // Cria a matriz de transformação
       centerX = left + width / 2 + matrix.e;
       centerY = top + height / 2 + matrix.f;
     }
@@ -404,7 +407,7 @@ const Piece = ({
     // Por exemplo, você pode tentar uma compensação de pixels manual para corrigir
 
     onHover({
-      center: { x: centerX, y: centerY},
+      center: { x: centerX, y: centerY },
       shape: shapes[shape],
     });
   };
@@ -416,8 +419,27 @@ const Piece = ({
 
     if (onDrop) {
       onDrop(index);
+    } else {
+      setPosition({ x: 0, y: 0 });
     }
   };
+
+  const handleDragStart = (index) => {
+    setDraggingStates((prev) => {
+      const updated = [...prev];
+      updated[index] = true; // Define como arrastando
+      return updated;
+    });
+  };
+
+  const handleDragEnd = (index) => {
+    setDraggingStates((prev) => {
+      const updated = [...prev];
+      updated[index] = false; // Define como não arrastando
+      return updated;
+    });
+  };
+
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
@@ -430,7 +452,22 @@ const Piece = ({
   }, [isDragging]);
 
   return (
-    <div
+    <motion.div
+
+      dragMomentum={false}
+
+
+      initial={isNew ? { scale: 0.5 } : false}
+      animate={{
+        scale: isDragging ? 1 : 0.8,
+      }}
+      whileDrag={{
+        scale: 0.8,
+      }}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onMouseUp={handleMouseUp}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="svg-container"
       ref={pieceRef}
       style={{
@@ -451,7 +488,7 @@ const Piece = ({
       >
         {shapesSVG[shape]}
       </svg>
-    </div>
+    </motion.div>
   );
 };
 

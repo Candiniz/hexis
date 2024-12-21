@@ -10,7 +10,8 @@ const Board = () => {
     const [droppedTriangles, setDroppedTriangles] = useState([]);
     const [droppedTriangleColors, setDroppedTriangleColors] = useState({});
     const [resetKey, setResetKey] = useState(0);
-
+    const [animatedPieces, setAnimatedPieces] = useState([]);
+    const [newPieces, setNewPieces] = useState([]);
 
     const scale = 0.8; // Escala do tabuleiro
     const size = 50 * scale; // Tamanho do triângulo
@@ -55,6 +56,8 @@ const Board = () => {
     const generateNewPieces = () => {
         const randomShapes = [getRandomShape(), getRandomShape(), getRandomShape()];
         setPieceShapes(randomShapes);
+
+        setNewPieces([0, 1, 2]);
         setResetKey((prevKey) => prevKey + 1);
     };
 
@@ -254,7 +257,21 @@ const Board = () => {
     };
 
 
-
+    useEffect(() => {
+        setAnimatedPieces((prev) => {
+            // Marque como não animadas apenas as novas peças
+            const newIndices = pieceShapes
+                .map((_, index) => (!prev.includes(index) ? index : null))
+                .filter((index) => index !== null);
+            return [...prev, ...newIndices];
+        });
+    }, [pieceShapes]);   
+    useEffect(() => {
+        if (newPieces.length > 0) {
+            const timeout = setTimeout(() => setNewPieces([]), 300); // Limpa após 300ms
+            return () => clearTimeout(timeout);
+        }
+    }, [newPieces]); 
 
     // Atualiza o estado isMobile com base na largura da tela
     useEffect(() => {
@@ -297,6 +314,8 @@ const Board = () => {
                             scaleFactor={1}
                             onDrop={() => handlePieceDrop(index)}
                             onHover={(triangles) => handlePieceHover(triangles)}
+                            isNew={newPieces.includes(index)}
+                            index={index}
                             positionY={positionY}
                             positionX={positionX}
                         />
