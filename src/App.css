@@ -43,16 +43,17 @@ body {
 
 .triangles {
   fill: #444;
+  transition: all 0.1s ease-in-out; 
+
+}
+
+.scaling {
+  transform: scale(1.05);  /* Aplica o aumento de 10% */
 }
 
 .highlighted {
   fill: rgb(255, 255, 255) !important;
   /* Destaque com a cor vermelha */
-}
-
-.triangles.dropped {
-  fill: #a15353;
-  cursor: not-allowed;
 }
 
 
@@ -81,3 +82,9 @@ body {
   }
 }
 
+.scoreboard {
+  position: absolute;
+  right: 200px;
+  top: calc(50% - 50px);
+  color: white;
+}

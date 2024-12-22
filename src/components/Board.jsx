@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect } from "react";
+import { DiagonalsUp, DiagonalsDown } from './Diagonals.js';
 import Piece from "./Piece";
 
 const Board = () => {
@@ -23,6 +24,10 @@ const Board = () => {
     const triangleCounts = [9, 11, 13, 15, 15, 13, 11, 9]; // Cresce até o meio e diminui
 
     const shapes = [
+        "triangle1",
+        "triangle2",
+        "unique1",
+        "unique2",
         "trapezoid1",
         "trapezoid2",
         "trapezoid1_vertical",
@@ -43,24 +48,30 @@ const Board = () => {
     ];
 
     const shapeColors = {
+        triangle1: "#ff9999",
+        triangle2: "#ffcc99",
+        unique1: "#9eb38b",
+        unique2: "#ffee99",
         lozenge1: "#ab5656",
         lozenge2: "#aba356",
         lozenge3: "#658f4f",
-        trapezoid1: "#98b68a",
-        trapezoid2: "#98b68a",
+        trapezoid1: "#59658e",
+        trapezoid2: "#9fdedb",
         trapezoid1_vertical: "#98b68a",
-        trapezoid2_vertical: "#98b68a",
-        hexagon: "#98b68a",
-        parallelogram1: "#598e8a",
-        parallelogram2: "#59658e",
-        parallelogram1_vertical: "#59658e",
+        trapezoid2_vertical: "#9fdedb",
+        hexagon: "#9fdedb",
+        parallelogram1: "#a3c4e9",
+        parallelogram2: "#a3aee9",
+        parallelogram1_vertical: "#98b68a",
         parallelogram2_vertical: "#59658e",
         semiHexagon1: "#b269b9",
         semiHexagon2: "#a17cba",
-        semiHexagon3: "#b68aa3",
-        semiHexagon4: "#98b68a",
-        semiHexagon5: "#8b8ab6",
+        semiHexagon3: "#f3b9da",
+        semiHexagon4: "#d5e6a7",
+        semiHexagon5: "#54cdc3",
     };
+
+
 
 
     // Função para selecionar aleatoriamente uma forma
@@ -109,6 +120,12 @@ const Board = () => {
             setDroppedTriangles((prev) => [...prev, ...highlightedTriangles]);
             setHighlightedTriangles([]);
 
+            const scoreSound = new Audio("/place_sound.wav")
+            scoreSound.play()
+
+            // Adiciona 1 ponto ao score por colocar uma peça
+            setScore((prevScore) => prevScore + highlightedTriangles.length / 2);
+
             // Remove a peça da lista
             setPieceShapes((prevShapes) => {
                 const updatedShapes = [...prevShapes];
@@ -127,37 +144,70 @@ const Board = () => {
     const checkForCompleteLines = (currentColors) => {
         let completedLines = 0;
 
-        // Função para resetar as cores e o estado dos triângulos completados
-        const resetCompletedTriangles = (triangles) => {
-            setDroppedTriangleColors((prevColors) => {
-                const resetColors = { ...prevColors };
-                triangles.forEach((index) => {
-                    delete resetColors[index]; // Remove a cor associada ao triângulo
-                });
-                return resetColors; // Atualiza o estado com as cores resetadas
-            });
+        const rowPointSound = new Audio("/row_point.wav")
 
-            setDroppedTriangles((prevTriangles) =>
-                prevTriangles.filter((index) => !triangles.includes(index))
-            ); // Remove os triângulos resetados da lista de triângulos dropados
+
+        const resetCompletedTriangles = (triangles) => {
+            // Marcar os triângulos que serão animados
+            setAnimatedPieces((prev) => [...prev, ...triangles]);
+
+            // Aplicar o estado de animação nos triângulos
+            setTimeout(() => {
+                setDroppedTriangleColors((prevColors) => {
+                    const resetColors = { ...prevColors };
+                    triangles.forEach((index) => {
+                        delete resetColors[index];
+                    });
+                    return resetColors;
+                });
+
+                setDroppedTriangles((prevTriangles) =>
+                    prevTriangles.filter((index) => !triangles.includes(index))
+                );
+
+                // Remover a classe de animação após o tempo da animação
+                setAnimatedPieces((prev) => prev.filter(item => !triangles.includes(item)));
+            }, 200);  // Tempo para a animação de escala (em ms)
         };
 
-        // Verifica linhas horizontais (rows)
+        // Verifica linhas horizontais
         for (let row = 0; row < rows; row++) {
             const rowIndex = Array.from({ length: triangleCounts[row] }, (_, colIndex) => `${row}-${colIndex}`);
 
-            // Verifica se todos os triângulos dessa linha têm cor
             if (rowIndex.every((index) => currentColors[index])) {
-                completedLines += 1; // Contabiliza a linha completa
-                resetCompletedTriangles(rowIndex); // Resetar os triângulos dessa linha
+
+                resetCompletedTriangles(rowIndex);
+                setScore((prevScore) => prevScore + 3 * rowIndex.length / 4);
+                rowPointSound.play()
             }
         }
 
-        // Atualiza a pontuação se houver linhas completas
-        if (completedLines > 0) {
-            setScore((prevScore) => prevScore + completedLines * 10); // Atribui pontos para cada linha completa
-        }
+        // Verifica diagonais ascendentes (DiagonalsUp)
+        DiagonalsUp.forEach((diagonal) => {
+            if (diagonal.every((index) => currentColors[index])) {
+                completedLines += 1;
+
+                resetCompletedTriangles(diagonal);
+                setScore((prevScore) => prevScore + 3 * diagonal.length / 4);
+                rowPointSound.play()
+            }
+        });
+
+        // Verifica diagonais descendentes (DiagonalsDown)
+        DiagonalsDown.forEach((diagonal) => {
+            if (diagonal.every((index) => currentColors[index])) {
+                completedLines += 1;
+
+                resetCompletedTriangles(diagonal);
+                setScore((prevScore) => prevScore + 3 * diagonal.length / 4);
+                rowPointSound.play()
+            }
+        });
     };
+
+
+
+
 
 
 
@@ -191,6 +241,8 @@ const Board = () => {
                 const isDropped = droppedTriangles.includes(uniqueIndex);
                 const fillColor = isDropped ? droppedTriangleColors[uniqueIndex] : "";
 
+                const isAnimating = animatedPieces.includes(uniqueIndex);
+
                 triangles.push(
                     <polygon
                         key={uniqueIndex}
@@ -203,12 +255,14 @@ const Board = () => {
                         strokeWidth="1"
                         className={`
                             triangles 
+                            ${isAnimating ? 'scaling' : ''}
                             ${isUp ? "up" : "down"} 
                             ${isHighlighted ? "highlighted" : ""} 
                          
                         `}
                         style={{ fill: fillColor }}
                         data-unique-index={uniqueIndex}
+                    // onMouseOver={() => console.log(uniqueIndex)}
                     />
                 );
             }
@@ -270,10 +324,8 @@ const Board = () => {
             let targetRow;
             if (isNordeste(uniqueIndex)) {
                 targetRow = centralRow + y;
-                console.log(targetRow)
             } else {
                 targetRow = centralRow + y;
-                console.log(targetRow)
             }
 
 
@@ -351,6 +403,7 @@ const Board = () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+    
 
     return (
         <>
@@ -390,7 +443,8 @@ const Board = () => {
                 })}
             </div>
             <div className="scoreboard">
-                <h3>Score: {score}</h3>
+                <h3>Score:</h3>
+                <p>{score}</p>
             </div>
         </>
     );

@@ -21,7 +21,6 @@ const Piece = ({
 
 
   const pieceRef = useRef(null);
-  const dragStartRef = useRef({ x: 0, y: 0 }); // Posição inicial do mouse
 
   // Validando o tamanho
   const validSize = typeof size === "number" && !isNaN(size) ? size : 50;
@@ -31,6 +30,86 @@ const Piece = ({
 
   // Definição das formas
   const shapesSVG = {
+    triangle1: (
+      <g className={styles.hexagono}>
+        <path
+          d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
+          fill="#ff9999"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#ff9999"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#ff9999"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 2},0 L${scaledSize},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#ff9999"
+          stroke="#222"
+          strokeWidth="1"
+        />
+
+      </g>
+    ),
+    triangle2: (
+      <g className={styles.hexagono}>
+        <path
+          d={`M0,${height * 2} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#ffcc99"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},${height * 2} L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#ffcc99"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},0 L${scaledSize / 2},${height} Z`}
+          fill="#ffcc99"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 2},${height * 2} L${scaledSize},${height * 2} L${scaledSize * 1.5},${height} Z`}
+          fill="#ffcc99"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+
+    unique1: (
+      <g className={styles.unique1}>
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#9eb38b"
+          stroke="#222"
+          strokeWidth="1"
+        />
+
+      </g>
+    ),
+    unique2: (
+      <g className={styles.unique2}>
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#ffee99"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+
     trapezoid1: (
       <g className={styles.paralelogramo2}
         transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
@@ -59,27 +138,26 @@ const Piece = ({
         transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#59658e"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize * 2},0 L${scaledSize * 2.5},${height} Z`}
-          fill="#59658e"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
       </g>
     ),
     trapezoid1_vertical: (
-      <g className={styles.paralelogramoVertical}>
-
+      <g className={styles.trapezoid1_vertical}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
           fill="#98b68a"
@@ -102,28 +180,28 @@ const Piece = ({
     ),
     trapezoid2_vertical: (
       <g
-        className={styles.paralelogramoVerticalFlipped}
-        transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`} // Espelha horizontalmente
+        className={styles.trapezoid2_vertical}
+        transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`}
       >
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
-  
+
       </g>
     ),
 
@@ -161,7 +239,7 @@ const Piece = ({
       </g>
     ),
     lozenge3: (
-      <g className={styles.hexagono}>
+      <g className={styles.lozango3}>
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
           fill="#658f4f"
@@ -293,46 +371,48 @@ const Piece = ({
         />
       </g>
     ),
+
     hexagon: (
       <g className={styles.hexagono}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
         />
       </g>
     ),
+    
     semiHexagon1: (
       <g className={styles.hexagono}>
         <path
@@ -393,25 +473,25 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#b68aa3"
+          fill="#f3b9da"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#b68aa3"
+          fill="#f3b9da"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#b68aa3"
+          fill="#f3b9da"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#b68aa3"
+          fill="#f3b9da"
           stroke="#222"
           strokeWidth="1"
         />
@@ -421,25 +501,25 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#d5e6a7"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#d5e6a7"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#98b68a"
+          fill="#d5e6a7"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#d5e6a7"
           stroke="#222"
           strokeWidth="1"
         />
@@ -449,26 +529,26 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#8b8ab6"
+          fill="#54cdc3"
           stroke="#222"
           strokeWidth="1"
         />
 
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#8b8ab6"
+          fill="#54cdc3"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#8b8ab6"
+          fill="#54cdc3"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#8b8ab6"
+          fill="#54cdc3"
           stroke="#222"
           strokeWidth="1"
         />
@@ -477,6 +557,26 @@ const Piece = ({
   };
 
   const shapes = {
+    triangle1: [
+      { x: 0, y: 0, orientation: "down" },
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: -2, y: 0, orientation: "down" },
+    ],
+    triangle2: [
+
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: -2, y: 1, orientation: "up" },
+      { x: 0, y: 1, orientation: "up" },
+
+    ],
+    unique1: [
+      { x: 0, y: 0, orientation: "up" },
+    ],
+    unique2: [
+      { x: 0, y: 0, orientation: "down" },
+    ],
     trapezoid1: [
       { x: -1, y: 0, orientation: "down" },
       { x: 0, y: 0, orientation: "up" },
@@ -490,7 +590,6 @@ const Piece = ({
       { x: 2, y: 0, orientation: "up" },
     ],
     trapezoid1_vertical: [
-
       { x: -1, y: 0, orientation: "up" },
       { x: -1, y: 1, orientation: "down" },
       { x: -2, y: 1, orientation: "up" },
@@ -534,8 +633,8 @@ const Piece = ({
       { x: 0, y: 0, orientation: "up" },
     ],
     lozenge3: [
-      { x: -3, y: 0, orientation: "up" },
-      { x: -3, y: 1, orientation: "down" },
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
     ],
     hexagon: [
       { x: -1, y: 0, orientation: "up" },
@@ -672,9 +771,11 @@ const Piece = ({
       initial={isNew ? { scale: 0.5 } : false}
       animate={{
         scale: isDragging ? 1 : 0.8,
+        opacity: isDragging ? 0.7 : 1,
       }}
       whileDrag={{
         scale: 0.8,
+        opacity: 0.7,
       }}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}

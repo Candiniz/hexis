@@ -8,8 +8,16 @@
     transform: translate(5px);
 }
 
+.lozango3 {
+    transform: translate(45px, -10px);
+}
+
 .lozango2 {}
 
 .hexagono {
     transform: translate(20px, -18px);
+}
+
+.unique2 {
+    transform: translate(-20px);
 }
