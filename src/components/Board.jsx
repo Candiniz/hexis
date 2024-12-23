@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { DiagonalsUp, DiagonalsDown } from './Diagonals.js';
 import piecesMap from "./highlightedTriangles.js";
 import Piece from "./Piece";
@@ -13,8 +14,15 @@ const Board = () => {
     const [droppedTriangleColors, setDroppedTriangleColors] = useState({});
     const [resetKey, setResetKey] = useState(0);
     const [animatedPieces, setAnimatedPieces] = useState([]);
+    const [isBoardScaling, setIsBoardScaling] = useState(false);
     const [newPieces, setNewPieces] = useState([]);
     const [score, setScore] = useState(0);
+
+    const [doomedPieces, setDoomedPieces] = useState([]);
+    const [isGameOver, setIsGameOver] = useState(false); // Estado para Game Over
+    const [randomDurations, setRandomDurations] = useState([]); // Para tempos aleatórios
+    const navigate = useNavigate(); // Para navegação ao GameOver
+
 
     const scale = 0.8; // Escala do tabuleiro
     const size = 50 * scale; // Tamanho do triângulo
@@ -83,6 +91,7 @@ const Board = () => {
 
 
 
+
     // Função para selecionar aleatoriamente uma forma
     const getRandomShape = () => {
         const randomIndex = Math.floor(Math.random() * shapes.length);
@@ -107,7 +116,8 @@ const Board = () => {
     }, [pieceShapes]);
 
 
-
+    const occupiedCoords = Object.keys(droppedTriangleColors);
+    console.log(doomedPieces)
     // Função para verificar se uma peça pode ser colocada no tabuleiro
     const isPiecePlaceable = (pieceCoords, occupiedCoords) => {
         return pieceCoords.every((coord) => !occupiedCoords.includes(coord));
@@ -115,6 +125,8 @@ const Board = () => {
 
     // Função para verificar se o jogo acabou
     const checkGameOver = (occupiedCoords, availablePieceShapes) => {
+        let newDoomedPieces = [];
+
         for (let pieceName of availablePieceShapes) {
             // Ignorar peças já utilizadas ou inexistentes (null)
             if (!pieceName) continue;
@@ -124,14 +136,18 @@ const Board = () => {
             // Verifica se pelo menos uma configuração da peça pode ser colocada
             const canPlacePiece = pieceConfigs.some(config => isPiecePlaceable(config, occupiedCoords));
 
+            if (!canPlacePiece) {
+                newDoomedPieces.push(pieceName);
+            }
+
             // Se ao menos uma peça pode ser colocada, o jogo continua
             if (canPlacePiece) {
                 return false; // O jogo não acabou
             }
         }
 
-        console.log('Game Over');
-        return true; // O jogo acabou
+        setDoomedPieces(newDoomedPieces);
+        return newDoomedPieces.length > 0;
     };
 
     useEffect(() => {
@@ -142,12 +158,15 @@ const Board = () => {
                 return;
             }
 
-            const occupiedCoords = Object.keys(droppedTriangleColors);
 
             // Passa apenas as peças disponíveis no estado pieceShapes
             if (checkGameOver(occupiedCoords, pieceShapes)) {
-                // Redireciona ou sinaliza que o jogo acabou
-                console.log("Redirecting to Game Over screen...");
+                setIsGameOver(true);
+
+                // Navegar para a tela de GameOver após a animação
+                setTimeout(() => {
+                    navigate("/game-over");
+                }, 5000);
             }
         }, 100); // Delay de 100ms
 
@@ -201,6 +220,34 @@ const Board = () => {
             setResetKey((prevKey) => prevKey + 1);
         }
     };
+
+    const checkDoomedPieces = (occupiedCoords, availablePieceShapes) => {
+        let newDoomedPieces = [];
+
+        for (let pieceName of availablePieceShapes) {
+            // Ignorar peças já utilizadas ou inexistentes (null)
+            if (pieceName === null) continue;
+
+            const pieceConfigs = piecesMap[pieceName];
+
+            // Verifica se pelo menos uma configuração da peça pode ser colocada
+            const canPlacePiece = pieceConfigs.some(config => isPiecePlaceable(config, occupiedCoords));
+
+            if (!canPlacePiece) {
+                newDoomedPieces.push(pieceName);
+            }
+        }
+
+        // Atualiza o estado de peças condenadas
+        setDoomedPieces(newDoomedPieces);
+    };
+
+    useEffect(() => {
+        // Quando droppedTriangleColors mudar, chamamos checkGameOver
+        const occupiedCoords = Object.keys(droppedTriangleColors);
+        checkDoomedPieces(occupiedCoords, pieceShapes);
+    }, [droppedTriangleColors, pieceShapes]);
+
 
 
     // Função para verificar se uma linha, coluna ou diagonal foi completada
@@ -267,6 +314,11 @@ const Board = () => {
                 rowPointSound.play()
             }
         });
+        if (completedLines > 0) {
+            // Ativa o efeito de escala do tabuleiro
+            setIsBoardScaling(true);
+            setTimeout(() => setIsBoardScaling(false), 200);
+        }
     };
 
 
@@ -275,6 +327,16 @@ const Board = () => {
         return `${rowIndex}-${colIndex}`;
     };
 
+    useEffect(() => {
+        // Gerar tempos aleatórios para transição dos triângulos
+        setRandomDurations(generateRandomDurations());
+    }, []);
+
+    const generateRandomDurations = () => {
+        return Array.from({ length: triangleCounts.reduce((sum, count) => sum + count, 0) }).map(() =>
+            Math.random() * 5 + 2
+        );
+    };
 
     // Gera os triângulos
     const generateTriangles = () => {
@@ -303,9 +365,13 @@ const Board = () => {
 
                 const isHighlighted = highlightedTriangles.includes(uniqueIndex);
                 const isDropped = droppedTriangles.includes(uniqueIndex);
-                const fillColor = isDropped ? droppedTriangleColors[uniqueIndex] : "";
+                const fillColor =
+                    isGameOver ? "#222" :
+                        isDropped ? droppedTriangleColors[uniqueIndex] : "";
+
 
                 const isAnimating = animatedPieces.includes(uniqueIndex);
+                const transitionDuration = randomDurations[rowIndex * colIndex] || 0.5;
 
                 triangles.push(
                     <polygon
@@ -324,7 +390,10 @@ const Board = () => {
                             ${isHighlighted ? "highlighted" : ""} 
                          
                         `}
-                        style={{ fill: fillColor }}
+                        style={{
+                            fill: fillColor,
+                            transition: isGameOver ? `fill ${transitionDuration}s ease-in-out` : "",
+                        }}
                         data-unique-index={uniqueIndex}
                     // onMouseOver={() => console.log(uniqueIndex)}
                     />
@@ -487,7 +556,11 @@ const Board = () => {
                 style={{ height: `${rows * height}px` }}
             >
                 <svg
-                    className="boardDiv"
+                    className={`
+                        boardDiv 
+                        ${isBoardScaling ? "scalingBoard" : ""} 
+                        ${isGameOver ? "endScaling" : ""}
+                    `}
                     width={triangleCounts[3] * size + size / 2} // Calcula a largura para incluir a maior fileira e centralizar
                     height={(rows) * height} // Adiciona espaço para as fileiras
                 >
@@ -501,18 +574,24 @@ const Board = () => {
                     const positionX = isMobile ? 130 * index : 0;
 
                     return (
-                        <Piece
-                            key={`${resetKey}-${index}`}
-                            shape={shape}
-                            size={size}
-                            scaleFactor={1}
-                            onDrop={() => handlePieceDrop(index)}
-                            onHover={(triangles) => handlePieceHover(triangles)}
-                            isNew={newPieces.includes(index)}
-                            index={index}
-                            positionY={positionY}
-                            positionX={positionX}
-                        />
+                        <div className={`piece 
+                            ${doomedPieces.includes(shape) ? "doomed" : ""}
+                            ${isGameOver ? "endScaling" : ""}
+                            `}
+                            key={`${resetKey}-${index}`}>
+                            <Piece
+
+                                shape={shape}
+                                size={size}
+                                scaleFactor={1}
+                                onDrop={() => handlePieceDrop(index)}
+                                onHover={(triangles) => handlePieceHover(triangles)}
+                                isNew={newPieces.includes(index)}
+                                index={index}
+                                positionY={positionY}
+                                positionX={positionX}
+                            />
+                        </div>
                     );
                 })}
             </div>
@@ -520,6 +599,7 @@ const Board = () => {
                 <h3>Score:</h3>
                 <p>{score}</p>
             </div>
+            <div className={`overlay ${isGameOver ? "visible" : ""}`} />
         </>
     );
 };
