@@ -156,7 +156,7 @@ const Piece = ({
         />
       </g>
     ),
-    trapezoid1_vertical: (
+    trapezoid1_vertical_a: (
       <g className={styles.trapezoid1_vertical}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
@@ -178,7 +178,7 @@ const Piece = ({
         />
       </g>
     ),
-    trapezoid2_vertical: (
+    trapezoid2_vertical_a: (
       <g
         className={styles.trapezoid2_vertical}
         transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`}
@@ -197,6 +197,54 @@ const Piece = ({
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#9fdedb"
+          stroke="#222"
+          strokeWidth="1"
+        />
+
+      </g>
+    ),
+    trapezoid1_vertical_b: (
+      <g className={styles.trapezoid1_vertical}>
+        <path
+          d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    trapezoid2_vertical_b: (
+      <g
+        className={styles.trapezoid2_vertical}
+        transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`}
+      >
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#9fdedb"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#9fdedb"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
           fill="#9fdedb"
           stroke="#222"
           strokeWidth="1"
@@ -312,7 +360,7 @@ const Piece = ({
         />
       </g>
     ),
-    parallelogram1_vertical: (
+    parallelogram1_vertical_a: (
       <g className={styles.paralelogramoVertical}>
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
@@ -340,11 +388,45 @@ const Piece = ({
         />
       </g>
     ),
-    parallelogram2_vertical: (
+    parallelogram2_vertical_a: (
       <g
         className={styles.paralelogramoVerticalFlipped}
         transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`} // Espelha horizontalmente
       >
+        <path
+          d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+      </g>
+    ),
+    parallelogram1_vertical_b: (
+      <g className={styles.paralelogramoVertical}>
+        <path
+          d={`M${scaledSize * 2},0 L${scaledSize * 1.5},${-height} L${scaledSize},0 Z`}
+          fill="#98b68a"
+          stroke="#222"
+          strokeWidth="1"
+        />
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
           fill="#98b68a"
@@ -363,9 +445,33 @@ const Piece = ({
           stroke="#222"
           strokeWidth="1"
         />
+      </g>
+    ),
+    parallelogram2_vertical_b: (
+      <g className={styles.paralelogramoVertical}
+      transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`}>
+        
         <path
-          d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#98b68a"
+          d={`M${scaledSize * 2},0 L${scaledSize * 1.5},${-height} L${scaledSize},0 Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
+          stroke="#222"
+          strokeWidth="1"
+        />
+        <path
+          d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
+          fill="#59658e"
           stroke="#222"
           strokeWidth="1"
         />
@@ -412,7 +518,7 @@ const Piece = ({
         />
       </g>
     ),
-    
+
     semiHexagon1: (
       <g className={styles.hexagono}>
         <path
@@ -589,16 +695,25 @@ const Piece = ({
       { x: 1, y: 0, orientation: "down" },
       { x: 2, y: 0, orientation: "up" },
     ],
-    trapezoid1_vertical: [
+    trapezoid1_vertical_a: [
       { x: -1, y: 0, orientation: "up" },
       { x: -1, y: 1, orientation: "down" },
       { x: -2, y: 1, orientation: "up" },
     ],
-    trapezoid2_vertical: [
+    trapezoid2_vertical_a: [
       { x: -2, y: 0, orientation: "down" },
       { x: -1, y: 0, orientation: "up" },
       { x: -1, y: 1, orientation: "down" },
-
+    ],
+    trapezoid1_vertical_b: [
+      { x: -1, y: 0, orientation: "down" },
+      { x: -2, y: 0, orientation: "up" },
+      { x: -2, y: 1, orientation: "down" },
+    ],
+    trapezoid2_vertical_b: [
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+      { x: 0, y: 1, orientation: "up" },
     ],
     parallelogram1: [
       { x: -1, y: 0, orientation: "down" },
@@ -612,21 +727,33 @@ const Piece = ({
       { x: -1, y: 0, orientation: "down" },
       { x: -2, y: 0, orientation: "up" },
     ],
-    parallelogram1_vertical: [
+    parallelogram1_vertical_a: [
       { x: 0, y: 0, orientation: "down" },
       { x: -1, y: 0, orientation: "up" },
       { x: -1, y: 1, orientation: "down" },
       { x: -2, y: 1, orientation: "up" },
     ],
-    parallelogram2_vertical: [
+    parallelogram2_vertical_a: [
       { x: -2, y: 0, orientation: "down" },
       { x: -1, y: 0, orientation: "up" },
       { x: -1, y: 1, orientation: "down" },
       { x: 0, y: 1, orientation: "up" },
     ],
-    lozenge1: [
+    parallelogram1_vertical_b: [
+      { x: -2, y: 0, orientation: "up" },
       { x: -1, y: 0, orientation: "down" },
-      { x: 0, y: 0, orientation: "up" },
+      { x: -1, y: -1, orientation: "up" },
+      { x: -2, y: 1, orientation: "down" },
+    ],
+    parallelogram2_vertical_b: [
+      { x: -2, y: -1, orientation: "up" },
+      { x: -2, y: 0, orientation: "down" },
+      { x: -1, y: 0, orientation: "up" },
+      { x: -1, y: 1, orientation: "down" },
+    ],
+    lozenge1: [
+      { x: 0, y: 0, orientation: "down" },
+      { x: 1, y: 0, orientation: "up" },
     ],
     lozenge2: [
       { x: 1, y: 0, orientation: "down" },
