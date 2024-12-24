@@ -1,0 +1,45 @@
+.footer {
+    position: fixed;
+    /* Fixa o footer na tela */
+    bottom: 0;
+    /* Coloca o footer no fundo */
+    left: 0;
+    width: 100%;
+    /* Garante que o footer ocupe toda a largura da tela */
+    background-color: #00000077;
+    color: #FFF;
+    padding: 1em;
+    text-align: center;
+    z-index: 1000;
+    /* Garantir que o footer fique sobre o conteúdo */
+}
+
+.footer_inside {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 0;
+    gap: 20px;
+}
+
+.social_list {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
+
+.social_list li {
+    margin: 0 0.2em;
+}
+
+.social_list li:hover {
+    color: #ffbb33;
+}
+
+.copyright span {
+    font-weight: bold;
+    background: linear-gradient(145deg, #cd49b7, #ffbb33);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}

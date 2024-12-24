@@ -1,6 +1,7 @@
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -24,6 +25,7 @@ body {
 
 .boardDiv {
   position: absolute;
+  margin-bottom: 20px;
   transition: all 0.1s ease-in-out;
 }
 
@@ -86,10 +88,21 @@ body {
 
 .scoreboard {
   position: absolute;
-  right: 140px;
-  top: calc(50% - 100px);
+  right: 110px;
+  top: calc(50% - 150px);
   color: white;
   font-size: 70px;
+  text-align: center;
+  line-height: 0.9;
+
+}
+
+.scoreboard span {
+  font-size: 15px;
+}
+
+.highscore .actualscore {
+  margin: 0 0;
 }
 
 .highscore {
@@ -103,7 +116,7 @@ body {
 @media (max-width: 1000px) {
   .scoreboard {
     position: absolute;
-    right: 120px;
+    right: 50px;
     color: white;
   }
   .piece_container {
@@ -177,10 +190,26 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  margin-top: 20px;
+  justify-content: start;
   height: 100vh;
   color: #fff;
   text-align: center;
+  max-width: 90vw;
+}
+
+@media (max-width: 600px) {
+  .main-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    height: 100%;
+    text-align: center;
+    max-width: 90vw;
+    margin-bottom: 50px;
+  }
 }
 
 .menu-options {
@@ -188,10 +217,12 @@ body {
   display: flex;
   flex-direction: column;
   width: 500px;
+  max-width: 100%;
 }
 
 .logo_main {
   width: 500px;
+  max-width: 100%;
 }
 
 
@@ -207,6 +238,7 @@ body {
   margin-top: 2px;
   box-sizing: border-box;
   transition: all 0.3s ease;
+  font-size: smaller;
 }
 
 .input_main:focus {
@@ -284,9 +316,19 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.65);
+  transform: translate(-50%, -51%) scale(0.65);
   z-index: -1;
   fill: #222;
+  transform-origin: center;
+}
+
+.hexSVG2 {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -51%) scale(0.85);
+  z-index: -2;
+  fill: #2424244b;
   transform-origin: center;
 }
 
@@ -296,4 +338,47 @@ body {
   z-index: -1;
   transform: translate(-50%, -50%) scale(0.65);
   transition: all 5s ease-in-out
+}
+
+.tippy_btn {
+  border-radius: 50%; /* Garante que o botão seja redondo */
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(145deg, #ffffff, #979797); /* Fundo elegante com gradiente */
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -4px -4px 18px rgba(244, 241, 214, 0.3); /* Efeito de elevação suave */
+  border: none; /* Remove a borda padrão */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; /* Mostra que o botão é clicável */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 30px;
+  color: #333;
+  animation: tippy_pulse 1.5s ease-in-out infinite; 
+}
+
+@keyframes tippy_pulse {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale:1.09
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+.tippy-box[data-theme="custom"] {
+  max-width: 350px; /* Aumenta a largura máxima */
+  width: 400px; /* Define uma largura fixa */
+  font-size: 14px; /* Ajusta o tamanho do texto */
+  padding: 20px; /* Adiciona mais espaço interno */
+  background-color: rgba(20, 20, 20, 0.961); /* Cor de fundo */
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.135); /* Sombra */
+}
+
+.popper_txt span {
+  color: #f632f6;
 }

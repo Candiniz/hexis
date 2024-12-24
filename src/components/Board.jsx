@@ -642,11 +642,14 @@ const Board = () => {
                 })}
             </div>
             <div className="scoreboard">
+                <span>Sua maior pontuação</span>
                 <p className="highscore">{highestScore}</p>
+                <span>Sua atual pontuação</span>
                 <p className="actualscore">{score}</p>
             </div>
             <div className={`overlay ${isGameOver ? "visible" : ""}`} />
             <HexagonSVG className={`hexSVG ${isGameOver ? "hexSVG_scaling" : ""}`} />
+            <HexagonSVG className={`hexSVG2 ${isGameOver ? "hexSVG_scaling2" : ""}`} />
             <Background />
         </>
     );

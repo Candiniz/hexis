@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useNickname } from "../context/NicknameContext"; // Importando o contexto
 import { ref, set, get } from "firebase/database";
 import { database, auth } from "../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import Background from "./Background";
+import Popper from "./Popper";
 
 // Função para salvar o nickname no Firebase
 async function saveNickname({ nickname, e, setNickname, user }) {
@@ -40,26 +41,51 @@ function MainMenu() {
     const { setNickname } = useNickname();  // Acessando o contexto
     const navigate = useNavigate();
 
+    const [popperPosition, setPopperPosition] = useState({ top: 0, left: 0 });
+    const imageRef = useRef(null);
+    const popperRef = useRef(null);
+
+    useEffect(() => {
+        const updatePopperPosition = () => {
+            if (imageRef.current) {
+                const rect = imageRef.current.getBoundingClientRect();
+                setPopperPosition({
+                    top: rect.top + window.scrollY,
+                    left: rect.left + window.scrollX,
+                });
+            }
+        };
+    
+        window.addEventListener("load", updatePopperPosition); // Atualiza no carregamento completo
+        window.addEventListener("resize", updatePopperPosition);
+    
+        return () => {
+            window.removeEventListener("load", updatePopperPosition);
+            window.removeEventListener("resize", updatePopperPosition);
+        };
+    }, []);
+    
+
     const handleStart = async (e) => {
         e.preventDefault(); // Previne o comportamento padrão do form
-    
+
         if (nicknameInput && email && password) {
             try {
                 // Primeiro tenta fazer login
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-    
+
                 // Salva o nickname no Firebase após o login bem-sucedido
                 await saveNickname({ nickname: nicknameInput, e, setNickname, user });
                 navigate("/game");  // Navega para o jogo
-    
+
             } catch (error) {
                 // Se falhar, tenta criar o novo usuário
                 if (error.code === "auth/user-not-found") {
                     try {
                         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                         const user = userCredential.user;
-    
+
                         // Salva o nickname no Firebase após a criação do novo usuário
                         await saveNickname({ nickname: nicknameInput, e, setNickname, user });
                         navigate("/game");  // Navega para o jogo
@@ -68,43 +94,56 @@ function MainMenu() {
                     }
                 } else if (error.code === "auth/email-already-in-use") {
                     // O email já está em uso, mas o login já foi tentado acima
-                    alert("Email already in use, please login.");
+                    alert("Email já em uso. Use-o para fazer o login.");
                 } else {
-                    alert("Login failed. Please check your email and password.");
+                    alert("Falha no login. Por favor, cheque seu email e senha.");
                 }
             }
         } else {
-            alert("Please enter a nickname, email, and password to start the game!");
+            alert("Por favor, entre com seu nickname, email e senha para jogar!");
         }
     };
 
     return (
         <div className="main-menu">
-            <img alt="Logo" src="/logo_hexis.png" className="logo_main" />
+
+            <img ref={imageRef} alt="Logo" src="/logo_hexis.png" className="logo_main" />
+            <div
+                ref={popperRef}
+                style={{
+                    position: "fixed",
+                    top: `${popperPosition.top}px`,
+                    left: `${popperPosition.left}px`,
+                    padding: "10px",
+                    borderRadius: "4px",
+                }}
+            >
+                <Popper />
+            </div>
             <div className="menu-options">
                 <input
                     className="input_main"
                     type="text"
-                    placeholder="Enter your nickname"
+                    placeholder="Escolha um nickname (novo ou existente)"
                     value={nicknameInput}
                     onChange={(e) => setNicknameInput(e.target.value)}  // Atualiza o estado do nickname
                 />
                 <input
                     className="input_main"
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="Entre com seu email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}  // Atualiza o estado do email
                 />
                 <input
                     className="input_main"
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="Entre com sua senha"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}  // Atualiza o estado da senha
+                    onChange={(e) => setPassword(e.target.value)} 
                 />
                 <div className="btn-div">
-                    <button className="menu-button" onClick={handleStart}>Jogar</button>
+                    <button className="menu-button" onClick={handleStart}>Vamos Jogar!</button>
                     <Link to="/ranking" className="menu-button-link">
                         Ranking Global
                     </Link>
