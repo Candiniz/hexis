@@ -12,6 +12,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  font-family: "Roboto Mono", serif;
 }
 
 
@@ -107,10 +108,12 @@ body {
 
 .highscore {
   color: #f632f6;
+  font-weight: bolder;
 }
 
 .actualscore {
   color: #e1ac37;
+  font-weight: bolder;
 }
 
 @media (max-width: 1000px) {
@@ -119,6 +122,7 @@ body {
     right: 50px;
     color: white;
   }
+
   .piece_container {
     position: absolute;
     top: 100px;
@@ -252,10 +256,9 @@ body {
 
 .input_main::placeholder {
   color: #aaa;
-  /* Cor suave para o texto de placeholder */
-  opacity: 1;
-  /* Impede o placeholder de ficar muito transparente */
+
   font-size: small;
+  font-family: "Roboto Mono", serif;
 }
 
 .btn-div {
@@ -272,7 +275,7 @@ body {
   text-align: center;
   /* Garante que o texto do link fique centralizado */
   padding: 10px 30px;
-
+  font-family: "Roboto Mono", serif;
   margin-top: 10px;
   font-size: small;
   border-radius: 8px;
@@ -295,7 +298,7 @@ body {
   color: #fff;
   border: none;
   padding: 10px 30px;
-
+  font-family: "Roboto Mono", serif;
   margin-top: 10px;
   font-size: 18px;
   border-radius: 8px;
@@ -341,44 +344,105 @@ body {
 }
 
 .tippy_btn {
-  border-radius: 50%; /* Garante que o botão seja redondo */
+  border-radius: 50%;
+  /* Garante que o botão seja redondo */
   width: 40px;
   height: 40px;
-  background: linear-gradient(145deg, #ffffff, #979797); /* Fundo elegante com gradiente */
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -4px -4px 18px rgba(244, 241, 214, 0.3); /* Efeito de elevação suave */
-  border: none; /* Remove a borda padrão */
+  background: linear-gradient(145deg, #ffffff, #979797);
+  /* Fundo elegante com gradiente */
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -4px -4px 18px rgba(244, 241, 214, 0.3);
+  /* Efeito de elevação suave */
+  border: none;
+  /* Remove a borda padrão */
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer; /* Mostra que o botão é clicável */
+  cursor: pointer;
+  /* Mostra que o botão é clicável */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-size: 30px;
   color: #333;
-  animation: tippy_pulse 1.5s ease-in-out infinite; 
+  animation: tippy_pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes tippy_pulse {
   0% {
     scale: 1;
   }
+
   50% {
-    scale:1.09
+    scale: 1.09
   }
+
   100% {
     scale: 1;
   }
 }
 
 .tippy-box[data-theme="custom"] {
-  max-width: 350px; /* Aumenta a largura máxima */
-  width: 400px; /* Define uma largura fixa */
-  font-size: 14px; /* Ajusta o tamanho do texto */
-  padding: 20px; /* Adiciona mais espaço interno */
-  background-color: rgba(20, 20, 20, 0.961); /* Cor de fundo */
-  border-radius: 8px; /* Bordas arredondadas */
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.135); /* Sombra */
+  z-index: 55;
+  width: 550px;
+  max-width: 90vw;
+  font-size: 14px;
+  /* Ajusta o tamanho do texto */
+  padding: 20px;
+  /* Adiciona mais espaço interno */
+  background-color: rgba(20, 20, 20, 0.961);
+  /* Cor de fundo */
+  border-radius: 8px;
+  /* Bordas arredondadas */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.135);
+  /* Sombra */
+  font-size: 11px;
 }
 
 .popper_txt span {
   color: #f632f6;
+}
+
+.game-over {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  color: #e1ac37;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 80px;
+}
+
+.game-over img {
+  width: 500px;
+  margin-bottom: -60px;
+}
+
+.game-over button {
+  margin-top: 40px;
+  padding: 5px 20px ;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #ffba24, #ea563c);
+  /* Fundo elegante com gradiente */
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -4px -4px 18px rgba(244, 241, 214, 0.3);
+  /* Efeito de elevação suave */
+  border: none;
+  /* Remove a borda padrão */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* Mostra que o botão é clicável */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 20px;
+  font-family: "Roboto Mono", serif;
+  color: #333;
+  animation: tippy_pulse 1.5s ease-in-out infinite;
+}
+
+.ranking-container {
+  color: #e1ac37;
+}
+
+.ranking-container h1 {
+  margin-bottom: 20px;
 }

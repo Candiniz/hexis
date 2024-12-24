@@ -10,7 +10,7 @@
     color: #FFF;
     padding: 1em;
     text-align: center;
-    z-index: 1000;
+    z-index: 49;
     /* Garantir que o footer fique sobre o conteúdo */
 }
 

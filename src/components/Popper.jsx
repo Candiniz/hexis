@@ -17,7 +17,7 @@ function TippyExample() {
                         Para começar, escolha um nickname, insira seu melhor email (não enviaremos nada) e crie uma senha. Caso seja sua primeira vez, sua conta será <span>criada automaticamente</span>, mas se já tiver uma conta, o sistema irá te <span>logar automaticamente</span> com suas credenciais. 
                         <br /><br />
                         
-                        <span>Você pode cadastrar quandos nicknames quiser em seu cadastro</span>, mas não pode usar nicknames cadastrados por outros jogadores. Veja o ranking e tente superar os melhores! 
+                        <span>Você pode cadastrar quantos nicknames quiser em seu cadastro</span>, mas não pode usar nicknames cadastrados por outros jogadores. Veja o ranking e tente superar os melhores! 
                         <br /><br />
 
                         <span>Boa sorte!</span>

@@ -10,42 +10,55 @@ const GameOver = () => {
   const [highestScore, setHighestScore] = useState(null);
   const location = useLocation();
   const { score } = location.state || {}; // Pegando o score enviado pelo Board
-  const { nickname } = useNickname();  // Acessando o nickname do contexto
   const [user, setUser] = useState(null);  // Estado para armazenar o usuário autenticado
+  const nickname = localStorage.getItem("nickname")
 
   // Verifica o usuário autenticado assim que o componente é montado
   useEffect(() => {
     const auth = getAuth();
     const currentUser = auth.currentUser;
+    
     if (currentUser) {
       setUser(currentUser);  // Atualiza o estado com o usuário autenticado
     }
   }, []);
 
-  async function updateScores(nickname, newestScore) {
+
+  // Função para atualizar os scores no Firebase
+  async function updateScores(userId, nickname, newestScore) {
     try {
-      const userRef = ref(database, 'users/' + nickname);
+      // Acessa o nó de users e depois o 'nicknames' do userId
+      const userRef = ref(database, 'users/' + userId + '/nicknames');
       const snapshot = await get(userRef);
 
       if (snapshot.exists()) {
-        const userData = snapshot.val();
+        const nicknamesData = snapshot.val();
 
-        // Verifica se o novo score é maior que o HighestScore atual
-        const updatedHighestScore = (newestScore > userData.HighestScore)
-          ? newestScore  // Se o novo score for maior, atualiza o HighestScore
-          : userData.HighestScore;  // Caso contrário, mantém o valor atual do HighestScore
+        // Verifica se o nickname existe para esse userId
+        const userData = nicknamesData[nickname];
 
-        // Atualiza o NewestScore e o HighestScore
-        await set(userRef, {
-          ...userData,
-          NewestScore: newestScore,  // Atualiza o NewestScore
-          HighestScore: updatedHighestScore,  // Atualiza o HighestScore apenas se necessário
-        });
+        if (userData) {
+          // Verifica se o novo score é maior que o HighestScore atual
+          const updatedHighestScore = (newestScore > userData.HighestScore)
+            ? newestScore  // Se o novo score for maior, atualiza o HighestScore
+            : userData.HighestScore;  // Caso contrário, mantém o valor atual do HighestScore
 
-        console.log("Scores updated successfully!");
-        return { NewestScore: newestScore, HighestScore: updatedHighestScore };
+          // Atualiza o NewestScore e o HighestScore
+          const userNicknameRef = ref(database, 'users/' + userId + '/nicknames/' + nickname);
+          await set(userNicknameRef, {
+            ...userData,
+            NewestScore: newestScore,  // Atualiza o NewestScore
+            HighestScore: updatedHighestScore,  // Atualiza o HighestScore apenas se necessário
+          });
+
+          console.log("Scores updated successfully!");
+          return { NewestScore: newestScore, HighestScore: updatedHighestScore };
+        } else {
+          console.log("No data available for this user and nickname.");
+          return null;
+        }
       } else {
-        console.log("No data available for this user.");
+        console.log("No users found.");
         return null;
       }
     } catch (error) {
@@ -57,7 +70,7 @@ const GameOver = () => {
   useEffect(() => {
     if (nickname && score !== undefined && user) {
       // Atualiza os scores apenas se o usuário estiver autenticado
-      updateScores(nickname, score).then((updatedScores) => {
+      updateScores(user.uid, nickname, score).then((updatedScores) => {
         if (updatedScores) {
           setNewestScore(updatedScores.NewestScore);
           setHighestScore(updatedScores.HighestScore);
@@ -68,7 +81,7 @@ const GameOver = () => {
 
   return (
     <div className="game-over">
-      <h1>Game Over</h1>
+      <img alt="Game Over" src="/GameOver.gif" />
       {newestScore !== null ? (
         <p>Your Newest Score: {newestScore}</p>
       ) : (

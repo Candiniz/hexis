@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { DiagonalsUp, DiagonalsDown } from './Diagonals.js';
 import piecesMap from "./highlightedTriangles.js";
 import Piece from "./Piece";
@@ -8,7 +8,7 @@ import Background from "./Background.jsx";
 import { ReactComponent as HexagonSVG } from './hexagon.svg';
 
 import { getAuth } from "firebase/auth";
-import { ref, get } from "firebase/database";
+import { ref, get, set } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
 import { useAuth } from "../context/AuthContext";
 
@@ -32,9 +32,11 @@ const Board = () => {
     const [doomedPieces, setDoomedPieces] = useState([]);
     const [isGameOver, setIsGameOver] = useState(false); // Estado para Game Over
     const [randomDurations, setRandomDurations] = useState([]); // Para tempos aleatórios
-    const { user } = useAuth();
+    const user = getAuth().currentUser;
 
     const navigate = useNavigate(); // Para navegação ao GameOver
+    const location = useLocation();
+    const nickname = localStorage.getItem("nickname") || location.state?.nickname || ""
 
     const usePreventReload = () => {
         useEffect(() => {
@@ -54,25 +56,25 @@ const Board = () => {
 
     useEffect(() => {
         const fetchHighestScore = async () => {
-            if (user) {
+            if (user && user.uid && nickname) {
                 try {
-                    const usersRef = ref(database, "users");
-                    const snapshot = await get(usersRef);
+                    const userRef = ref(database, `users/${user.uid}/nicknames`);
+                    const snapshot = await get(userRef);
 
                     if (snapshot.exists()) {
-                        const users = snapshot.val();
-                        const userEntry = Object.values(users).find(
-                            (userData) => userData.userId === user.uid
-                        );
+                        const nicknamesData = snapshot.val();
 
-                        if (userEntry) {
-                            setHighestScore(userEntry.HighestScore || 0);
+                        if (nicknamesData[nickname]) {
+                            setHighestScore(nicknamesData[nickname].HighestScore || 0);
                         } else {
-                            console.warn("No user data found for this UID.");
+                            // Caso o nickname não exista no banco de dados, cria um novo nó zerado
+                            await set(ref(database, `users/${user.uid}/nicknames/${nickname}`), {
+                                HighestScore: 0,
+                                NewestScore: 0,
+                                Nickname: nickname,
+                            });
                             setHighestScore(0);
                         }
-                    } else {
-                        console.warn("No users data available.");
                     }
                 } catch (error) {
                     console.error("Error fetching highest score:", error);
@@ -80,8 +82,10 @@ const Board = () => {
             }
         };
 
-        fetchHighestScore();
-    }, [user]);
+        const timeoutId = setTimeout(fetchHighestScore, 200); // 200ms de atraso
+
+        return () => clearTimeout(timeoutId);
+    }, [user, nickname]);
 
 
 
