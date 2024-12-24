@@ -1,6 +1,7 @@
 // firebaseConfig.js
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, get, child, remove } from "firebase/database";  // Realtime Database
+import { getDatabase, ref, set, get, child, remove } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyArWK1K3HLp7GFJbsf09vQFvEeJWT5g9YM",
@@ -13,10 +14,9 @@ const firebaseConfig = {
   measurementId: "G-HMYE1TMMWS"
 };
 
-// Inicializa o Firebase
+
 const app = initializeApp(firebaseConfig);
-
-// Obtenha a instância do Realtime Database
 const database = getDatabase(app);
+const auth = getAuth(app);
 
-export { database, ref, set, get, child, remove };  // Exporte as funções do Realtime Database
+export { database, ref, set, get, child, remove, auth };  // Exporte as funções do Realtime Database

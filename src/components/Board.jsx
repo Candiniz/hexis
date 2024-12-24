@@ -7,6 +7,12 @@ import Piece from "./Piece";
 import Background from "./Background.jsx";
 import { ReactComponent as HexagonSVG } from './hexagon.svg';
 
+import { getAuth } from "firebase/auth";
+import { ref, get } from "firebase/database";
+import { database } from "../firebase/firebaseConfig";
+import { useAuth } from "../context/AuthContext";
+
+
 
 const Board = () => {
     const [highlightedTriangles, setHighlightedTriangles] = useState([]);
@@ -19,12 +25,64 @@ const Board = () => {
     const [animatedPieces, setAnimatedPieces] = useState([]);
     const [isBoardScaling, setIsBoardScaling] = useState(false);
     const [newPieces, setNewPieces] = useState([]);
+
     const [score, setScore] = useState(0);
+    const [highestScore, setHighestScore] = useState(null);
 
     const [doomedPieces, setDoomedPieces] = useState([]);
     const [isGameOver, setIsGameOver] = useState(false); // Estado para Game Over
     const [randomDurations, setRandomDurations] = useState([]); // Para tempos aleatórios
+    const { user } = useAuth();
+
     const navigate = useNavigate(); // Para navegação ao GameOver
+
+    const usePreventReload = () => {
+        useEffect(() => {
+            const handleBeforeUnload = (event) => {
+                event.preventDefault(); // Previne a ação padrão
+                event.returnValue = ""; // Exibe o alerta no navegador
+            };
+
+            window.addEventListener("beforeunload", handleBeforeUnload);
+            return () => {
+                window.removeEventListener("beforeunload", handleBeforeUnload);
+            };
+        }, []);
+    };
+
+    usePreventReload()
+
+    useEffect(() => {
+        const fetchHighestScore = async () => {
+            if (user) {
+                try {
+                    const usersRef = ref(database, "users");
+                    const snapshot = await get(usersRef);
+
+                    if (snapshot.exists()) {
+                        const users = snapshot.val();
+                        const userEntry = Object.values(users).find(
+                            (userData) => userData.userId === user.uid
+                        );
+
+                        if (userEntry) {
+                            setHighestScore(userEntry.HighestScore || 0);
+                        } else {
+                            console.warn("No user data found for this UID.");
+                            setHighestScore(0);
+                        }
+                    } else {
+                        console.warn("No users data available.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching highest score:", error);
+                }
+            }
+        };
+
+        fetchHighestScore();
+    }, [user]);
+
 
 
     const scale = 1; // Escala do tabuleiro
@@ -165,7 +223,7 @@ const Board = () => {
             // Passa apenas as peças disponíveis no estado pieceShapes
             if (checkGameOver(occupiedCoords, pieceShapes)) {
                 setIsGameOver(true);
-                
+
 
                 // Navegar para a tela de GameOver após a animação
                 setTimeout(() => {
@@ -421,7 +479,7 @@ const Board = () => {
             const isUp = triangle.classList.contains("up"); // Verifica a classe "up" ou "down"
             return { rect, uniqueIndex, isUp };
         });
-    
+
         const centralTriangle = boardTriangles.find(({ rect }) => {
             return (
                 center.x > rect.left &&
@@ -430,20 +488,20 @@ const Board = () => {
                 center.y < rect.bottom
             );
         });
-    
+
         if (!centralTriangle) {
             setHighlightedTriangles([]);
             return;
         }
-    
+
         const [centralRow, centralCol] = centralTriangle.uniqueIndex
             .split("-")
             .map(Number);
-    
+
         const triangleMap = new Map(
             boardTriangles.map((triangle) => [triangle.uniqueIndex, triangle])
         );
-    
+
         const trianglesToHighlight = shape.map(({ x, y, orientation, uniqueIndex }) => {
             // Função para verificar se o uniqueIndex pertence à região nordeste
             function isNordeste(uniqueIndex) {
@@ -455,13 +513,13 @@ const Board = () => {
                     (row === 3 && col >= 14)
                 );
             }
-    
+
             // Definindo a lógica de cálculo do targetRow com base na região
             let targetRow = centralRow + y;
-    
+
             // Calcular targetCol de forma mais precisa
             let targetCol = centralCol + x;
-    
+
             if (
                 shape.some((triangle) => triangle.y === 0) &&
                 shape.some((triangle) => triangle.y === 1)
@@ -476,7 +534,7 @@ const Board = () => {
                         ? Math.floor((triangleCounts[centralRow] - triangleCounts[targetRow]) / 2)
                         : 0;
             }
-    
+
             if (
                 targetRow >= 0 &&
                 targetRow < triangleCounts.length &&
@@ -484,7 +542,7 @@ const Board = () => {
                 targetCol < triangleCounts[targetRow]
             ) {
                 const targetTriangle = triangleMap.get(`${targetRow}-${targetCol}`);
-    
+
                 if (
                     targetTriangle &&
                     targetTriangle.isUp === (orientation === "up") &&
@@ -495,16 +553,16 @@ const Board = () => {
             }
             return null;
         });
-    
+
         // Adicionando condição para manter o destaque anterior até haver uma nova posição válida
         if (trianglesToHighlight.some((item) => item === null)) {
             return; // Não atualiza os destaques se houver uma posição inválida
         }
-    
+
         // Filtra nulos e atualiza os destaques
         setHighlightedTriangles(trianglesToHighlight.filter(Boolean));
     };
-    
+
 
 
 
@@ -584,12 +642,11 @@ const Board = () => {
                 })}
             </div>
             <div className="scoreboard">
-                <p>{score}</p>
+                <p className="highscore">{highestScore}</p>
+                <p className="actualscore">{score}</p>
             </div>
             <div className={`overlay ${isGameOver ? "visible" : ""}`} />
-            <div className={`${isGameOver ? "hexSVG_scaling" : ""}`}>
-            <HexagonSVG className="hexSVG" />
-            </div>
+            <HexagonSVG className={`hexSVG ${isGameOver ? "hexSVG_scaling" : ""}`} />
             <Background />
         </>
     );
