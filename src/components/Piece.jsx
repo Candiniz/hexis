@@ -31,7 +31,7 @@ const Piece = ({
   // Definição das formas
   const shapesSVG = {
     triangle1: (
-      <g className={styles.hexagono}>
+      <g className={styles.triangle1}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
           fill="#ff9999"
@@ -134,7 +134,7 @@ const Piece = ({
       </g>
     ),
     trapezoid2: (
-      <g className={styles.paralelogramo2}
+      <g className={styles.trapezoid2}
         transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
@@ -157,7 +157,7 @@ const Piece = ({
       </g>
     ),
     trapezoid1_vertical_a: (
-      <g className={styles.trapezoid1_vertical}>
+      <g className={styles.trapezoid1_vertical_a}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
           fill="#98b68a"
@@ -205,7 +205,7 @@ const Piece = ({
       </g>
     ),
     trapezoid1_vertical_b: (
-      <g className={styles.trapezoid1_vertical}>
+      <g className={styles.trapezoid1_vertical_b}>
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
           fill="#98b68a"
@@ -228,8 +228,8 @@ const Piece = ({
     ),
     trapezoid2_vertical_b: (
       <g
-        className={styles.trapezoid2_vertical}
-        transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`}
+        className={styles.trapezoid2_vertical_b}
+        transform={`scale(-1, 1) translate(-${scaledSize * 1.8}, -20)`}
       >
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
@@ -361,7 +361,7 @@ const Piece = ({
       </g>
     ),
     parallelogram1_vertical_a: (
-      <g className={styles.paralelogramoVertical}>
+      <g className={styles.parallelogram1_vertical_a}>
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
           fill="#98b68a"
@@ -449,7 +449,7 @@ const Piece = ({
     ),
     parallelogram2_vertical_b: (
       <g className={styles.paralelogramoVertical}
-      transform={`scale(-1, 1) translate(-${scaledSize * 2.5}, 0)`}>
+      transform={`scale(-1, 1) translate(-${scaledSize * 2.0}, -10)`}>
         
         <path
           d={`M${scaledSize * 2},0 L${scaledSize * 1.5},${-height} L${scaledSize},0 Z`}

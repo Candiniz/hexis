@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { DiagonalsUp, DiagonalsDown } from './Diagonals.js';
 import piecesMap from "./highlightedTriangles.js";
 import Piece from "./Piece";
+import Background from "./Background.jsx";
+import { ReactComponent as HexagonSVG } from './hexagon.svg';
+
 
 const Board = () => {
     const [highlightedTriangles, setHighlightedTriangles] = useState([]);
@@ -24,7 +27,7 @@ const Board = () => {
     const navigate = useNavigate(); // Para navegação ao GameOver
 
 
-    const scale = 0.8; // Escala do tabuleiro
+    const scale = 1; // Escala do tabuleiro
     const size = 50 * scale; // Tamanho do triângulo
     const height = (Math.sqrt(3) / 2) * size; // Altura do triângulo equilátero
     const rows = 8; // Número total de fileiras
@@ -76,7 +79,7 @@ const Board = () => {
         trapezoid2_vertical_b: "#98b68a",
         hexagon: "#9fdedb",
         parallelogram1: "#a3c4e9",
-        parallelogram2: "#a3aee9",
+        parallelogram2: "#59658e",
         parallelogram1_vertical_a: "#98b68a",
         parallelogram2_vertical_a: "#59658e",
         parallelogram1_vertical_b: "#98b68a",
@@ -117,7 +120,7 @@ const Board = () => {
 
 
     const occupiedCoords = Object.keys(droppedTriangleColors);
-    console.log(doomedPieces)
+
     // Função para verificar se uma peça pode ser colocada no tabuleiro
     const isPiecePlaceable = (pieceCoords, occupiedCoords) => {
         return pieceCoords.every((coord) => !occupiedCoords.includes(coord));
@@ -162,10 +165,11 @@ const Board = () => {
             // Passa apenas as peças disponíveis no estado pieceShapes
             if (checkGameOver(occupiedCoords, pieceShapes)) {
                 setIsGameOver(true);
+                
 
                 // Navegar para a tela de GameOver após a animação
                 setTimeout(() => {
-                    navigate("/game-over");
+                    navigate("/game-over", { state: { score } });
                 }, 5000);
             }
         }, 100); // Delay de 100ms
@@ -205,7 +209,7 @@ const Board = () => {
             scoreSound.play()
 
             // Adiciona 1 ponto ao score por colocar uma peça
-            setScore((prevScore) => prevScore + highlightedTriangles.length / 2);
+            setScore((prevScore) => Math.round(prevScore + highlightedTriangles.length / 2));
 
             // Remove a peça da lista
             setPieceShapes((prevShapes) => {
@@ -288,7 +292,7 @@ const Board = () => {
             if (rowIndex.every((index) => currentColors[index])) {
 
                 resetCompletedTriangles(rowIndex);
-                setScore((prevScore) => prevScore + 3 * rowIndex.length / 4);
+                setScore((prevScore) => Math.round(prevScore + 3 * rowIndex.length / 4));
                 rowPointSound.play()
             }
         }
@@ -299,7 +303,7 @@ const Board = () => {
                 completedLines += 1;
 
                 resetCompletedTriangles(diagonal);
-                setScore((prevScore) => prevScore + 3 * diagonal.length / 4);
+                setScore((prevScore) => Math.round(prevScore + 3 * diagonal.length / 4));
                 rowPointSound.play()
             }
         });
@@ -310,7 +314,7 @@ const Board = () => {
                 completedLines += 1;
 
                 resetCompletedTriangles(diagonal);
-                setScore((prevScore) => prevScore + 3 * diagonal.length / 4);
+                setScore((prevScore) => Math.round(prevScore + 3 * diagonal.length / 4));
                 rowPointSound.play()
             }
         });
@@ -409,7 +413,6 @@ const Board = () => {
 
     // Função de colisão atualizada para considerar o cálculo da posição de peças maiores
     const handlePieceHover = ({ center, shape }) => {
-
         const boardTriangles = Array.from(
             boardRef.current.querySelectorAll(".triangles")
         ).map((triangle) => {
@@ -418,8 +421,7 @@ const Board = () => {
             const isUp = triangle.classList.contains("up"); // Verifica a classe "up" ou "down"
             return { rect, uniqueIndex, isUp };
         });
-
-
+    
         const centralTriangle = boardTriangles.find(({ rect }) => {
             return (
                 center.x > rect.left &&
@@ -428,94 +430,81 @@ const Board = () => {
                 center.y < rect.bottom
             );
         });
-
+    
         if (!centralTriangle) {
             setHighlightedTriangles([]);
             return;
         }
-
+    
         const [centralRow, centralCol] = centralTriangle.uniqueIndex
             .split("-")
             .map(Number);
-
-
-
-
-        const triangleMap = new Map(boardTriangles
-            .map(triangle => [triangle.uniqueIndex, triangle]));
-
-
-
-
-
-
-        const trianglesToHighlight = shape
-            .map(({ x, y, orientation, uniqueIndex }) => {
-
-                // Função para verificar se o uniqueIndex pertence à região nordeste
-                function isNordeste(uniqueIndex) {
-                    const [row, col] = centralTriangle.uniqueIndex.split('-').map(Number);
-
-                    return (row === 0 && col >= 8) ||
-                        (row === 1 && col >= 10) ||
-                        (row === 2 && col >= 12) ||
-                        (row === 3 && col >= 14);
-                }
-
-                // Definindo a lógica de cálculo do targetRow com base na região
-                let targetRow;
-                if (isNordeste(uniqueIndex)) {
-                    targetRow = centralRow + y;
-                } else {
-                    targetRow = centralRow + y;
-                }
-
-
-                let targetCol;
-
-                if (
-                    shape.some(triangle => triangle.y === 0) &&
-                    shape.some(triangle => triangle.y === 1)) {
-
-                    targetCol = centralCol + x - ((targetRow >= 0 && targetRow < triangleCounts.length)
+    
+        const triangleMap = new Map(
+            boardTriangles.map((triangle) => [triangle.uniqueIndex, triangle])
+        );
+    
+        const trianglesToHighlight = shape.map(({ x, y, orientation, uniqueIndex }) => {
+            // Função para verificar se o uniqueIndex pertence à região nordeste
+            function isNordeste(uniqueIndex) {
+                const [row, col] = centralTriangle.uniqueIndex.split("-").map(Number);
+                return (
+                    (row === 0 && col >= 8) ||
+                    (row === 1 && col >= 10) ||
+                    (row === 2 && col >= 12) ||
+                    (row === 3 && col >= 14)
+                );
+            }
+    
+            // Definindo a lógica de cálculo do targetRow com base na região
+            let targetRow = centralRow + y;
+    
+            // Calcular targetCol de forma mais precisa
+            let targetCol = centralCol + x;
+    
+            if (
+                shape.some((triangle) => triangle.y === 0) &&
+                shape.some((triangle) => triangle.y === 1)
+            ) {
+                targetCol -=
+                    targetRow >= 0 && targetRow < triangleCounts.length
                         ? Math.floor((triangleCounts[centralRow] - triangleCounts[targetRow]) / 2 - 1)
-                        : 0);
-                } else {
-                    targetCol = centralCol + x - ((targetRow >= 0 && targetRow < triangleCounts.length)
+                        : 0;
+            } else {
+                targetCol -=
+                    targetRow >= 0 && targetRow < triangleCounts.length
                         ? Math.floor((triangleCounts[centralRow] - triangleCounts[targetRow]) / 2)
-                        : 0);
-                }
-
-
-
+                        : 0;
+            }
+    
+            if (
+                targetRow >= 0 &&
+                targetRow < triangleCounts.length &&
+                targetCol >= 0 &&
+                targetCol < triangleCounts[targetRow]
+            ) {
+                const targetTriangle = triangleMap.get(`${targetRow}-${targetCol}`);
+    
                 if (
-                    targetRow >= 0 &&
-                    targetRow < triangleCounts.length &&
-                    targetCol >= 0 &&
-                    targetCol < triangleCounts[targetRow]
+                    targetTriangle &&
+                    targetTriangle.isUp === (orientation === "up") &&
+                    !droppedTriangles.includes(`${targetRow}-${targetCol}`)
                 ) {
-                    const targetTriangle = triangleMap.get(`${targetRow}-${targetCol}`);
-
-                    if (
-                        targetTriangle &&
-                        targetTriangle.isUp === (orientation === "up") &&
-                        !droppedTriangles.includes(`${targetRow}-${targetCol}`)
-                    ) {
-                        return `${targetRow}-${targetCol}`;
-                    }
+                    return `${targetRow}-${targetCol}`;
                 }
-                return null;
-            });
-
-        if (trianglesToHighlight.some(item => item === null)) {
-            setHighlightedTriangles([]);
-            return
+            }
+            return null;
+        });
+    
+        // Adicionando condição para manter o destaque anterior até haver uma nova posição válida
+        if (trianglesToHighlight.some((item) => item === null)) {
+            return; // Não atualiza os destaques se houver uma posição inválida
         }
-
+    
         // Filtra nulos e atualiza os destaques
         setHighlightedTriangles(trianglesToHighlight.filter(Boolean));
-        // console.log(trianglesToHighlight);
     };
+    
 
 
 
@@ -547,7 +536,6 @@ const Board = () => {
         };
     }, []);
 
-
     return (
         <>
             <div
@@ -570,7 +558,7 @@ const Board = () => {
             <div className="piece_container">
                 {pieceShapes.length > 0 && pieceShapes.map((shape, index) => {
 
-                    const positionY = isMobile ? 0 : 90 * index;
+                    const positionY = isMobile ? 0 : 120 * index;
                     const positionX = isMobile ? 130 * index : 0;
 
                     return (
@@ -596,10 +584,13 @@ const Board = () => {
                 })}
             </div>
             <div className="scoreboard">
-                <h3>Score:</h3>
                 <p>{score}</p>
             </div>
             <div className={`overlay ${isGameOver ? "visible" : ""}`} />
+            <div className={`${isGameOver ? "hexSVG_scaling" : ""}`}>
+            <HexagonSVG className="hexSVG" />
+            </div>
+            <Background />
         </>
     );
 };

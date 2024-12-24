@@ -2,7 +2,9 @@
     transform: translate(-15px);
 }
 
-.paralelogramo2 {}
+.trapezoid2 {
+    transform: translate(-29px);
+}
 
 .lozango1 {
     transform: translate(5px);
@@ -12,12 +14,22 @@
     transform: translate(45px, -10px);
 }
 
-.lozango2 {}
+.trapezoid1_vertical_b {
+    transform: translate(0, -18px);
+}
 
 .hexagono {
     transform: translate(20px, -18px);
 }
 
 .unique2 {
-    transform: translate(-20px);
+    transform: translate(-40px);
+}
+
+.trapezoid1_vertical_a {
+    transform: translate(0px, -10px);
+}
+
+.parallelogram1_vertical_a {
+    transform: translate(0px, -20px);
 }
