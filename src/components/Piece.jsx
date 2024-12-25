@@ -856,13 +856,16 @@ const Piece = ({
     setActiveTouchId(touch.identifier);
     setIsDragging(true);
 
-    // Calculando a posição inicial da peça em relação à viewport
+    // Ajusta o cálculo para a escala da viewport
     const rect = pieceRef.current.getBoundingClientRect();
-    pieceRef.current.dragStartX = touch.clientX - rect.left;  // Posição X em relação à peça
-    pieceRef.current.dragStartY = touch.clientY - rect.top;   // Posição Y em relação à peça
-    console.log(pieceRef.current.dragStartX, pieceRef.current.dragStartY)
+    const scaleX = window.innerWidth / document.documentElement.clientWidth;
+    const scaleY = window.innerHeight / document.documentElement.clientHeight;
 
-    event.preventDefault(); // Previne comportamentos indesejados, como scroll
+    // Corrige o valor para a escala da tela
+    pieceRef.current.dragStartX = touch.clientX - rect.left * scaleX;
+    pieceRef.current.dragStartY = touch.clientY - rect.top * scaleY;
+
+    event.preventDefault();
   };
 
   const handleTouchMove = (event) => {
@@ -876,7 +879,6 @@ const Piece = ({
     // Calculando a nova posição com base no toque
     const newX = touch.clientX - pieceRef.current.dragStartX;
     const newY = touch.clientY - pieceRef.current.dragStartY;
-    console.log(newY, newX)
 
     setPosition({ x: newX, y: newY });
 
