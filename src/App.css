@@ -22,6 +22,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100vw;
+  overflow: hidden;
 }
 
 .boardDiv {
@@ -89,6 +90,8 @@ body {
 
 .scoreboard {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   right: 110px;
   top: calc(50% - 150px);
   color: white;
@@ -141,7 +144,6 @@ body {
   .scoreboard {
     position: absolute;
     right: 50px;
-
     color: white;
   }
 
@@ -158,9 +160,23 @@ body {
 
   .scoreboard {
     position: absolute;
-    right: 50%;
-    top: 50px;
-    color: white;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    padding: 0;
+    margin: auto;
+    width: 90%;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
+  .scoreboard span {
+    line-height: 10px;
   }
 
   .scoreboard h3 {
@@ -194,7 +210,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 50px;
   justify-content: start;
   height: 100vh;
   color: #fff;
@@ -265,6 +281,7 @@ body {
   display: flex;
   width: 100%;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .menu-button-link {
@@ -440,4 +457,9 @@ body {
 
 .ranking-container h1 {
   margin-bottom: 20px;
+}
+
+.recover_passworld {
+  text-decoration: none;
+  color: white;
 }

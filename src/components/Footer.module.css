@@ -4,7 +4,7 @@
     bottom: 0;
     /* Coloca o footer no fundo */
     left: 0;
-    width: 100%;
+    width: 100vw;
     /* Garante que o footer ocupe toda a largura da tela */
     background-color: #00000077;
     color: #FFF;
@@ -12,6 +12,12 @@
     text-align: center;
     z-index: 49;
     /* Garantir que o footer fique sobre o conteúdo */
+}
+
+@media (max-width: 600px) {
+    .footer {
+        font-size: x-small;
+    }
 }
 
 .footer_inside {

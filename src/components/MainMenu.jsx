@@ -232,13 +232,13 @@ function MainMenu() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="btn-div">
-                    <button className="menu-button" onClick={handleStart}>Vamos Jogar!</button>
+                    <button className="menu-button" onClick={handleStart}>Jogar!</button>
                     <Link to="/ranking" className="menu-button-link">
                         Ranking Global
                     </Link>
                 </div>
                 <p>
-                    <Link to="/recover-password">Esqueceu sua senha?</Link>
+                    <Link to="/recover-password" className="recover_passworld">Esqueceu sua senha?</Link>
                 </p>
             </div>
             <Background />
