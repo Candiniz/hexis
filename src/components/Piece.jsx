@@ -860,6 +860,7 @@ const Piece = ({
     const rect = pieceRef.current.getBoundingClientRect();
     pieceRef.current.dragStartX = touch.clientX - rect.left;  // Posição X em relação à peça
     pieceRef.current.dragStartY = touch.clientY - rect.top;   // Posição Y em relação à peça
+    console.log(pieceRef.current.dragStartX, pieceRef.current.dragStartY)
 
     event.preventDefault(); // Previne comportamentos indesejados, como scroll
   };
@@ -875,6 +876,7 @@ const Piece = ({
     // Calculando a nova posição com base no toque
     const newX = touch.clientX - pieceRef.current.dragStartX;
     const newY = touch.clientY - pieceRef.current.dragStartY;
+    console.log(newY, newX)
 
     setPosition({ x: newX, y: newY });
 
