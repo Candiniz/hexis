@@ -485,12 +485,19 @@ const Board = () => {
             return { rect, uniqueIndex, isUp };
         });
 
+        // Ajusta as coordenadas para eventos de toque, se necessário
+        const isTouchEvent = center.identifier !== undefined; // Verifica se é um evento de toque
+        const adjustedCenter = {
+            x: isTouchEvent ? center.clientX || center.x : center.x,
+            y: isTouchEvent ? center.clientY || center.y : center.y,
+        };
+
         const centralTriangle = boardTriangles.find(({ rect }) => {
             return (
-                center.x > rect.left &&
-                center.x < rect.right &&
-                center.y > rect.top &&
-                center.y < rect.bottom
+                adjustedCenter.x > rect.left &&
+                adjustedCenter.x < rect.right &&
+                adjustedCenter.y > rect.top &&
+                adjustedCenter.y < rect.bottom
             );
         });
 
@@ -507,25 +514,11 @@ const Board = () => {
             boardTriangles.map((triangle) => [triangle.uniqueIndex, triangle])
         );
 
-        const trianglesToHighlight = shape.map(({ x, y, orientation, uniqueIndex }) => {
-            // Função para verificar se o uniqueIndex pertence à região nordeste
-            // eslint-disable-next-line no-unused-vars
-            function isNordeste(uniqueIndex) {
-                const [row, col] = centralTriangle.uniqueIndex.split("-").map(Number);
-                return (
-                    (row === 0 && col >= 8) ||
-                    (row === 1 && col >= 10) ||
-                    (row === 2 && col >= 12) ||
-                    (row === 3 && col >= 14)
-                );
-            }
-
-            // Definindo a lógica de cálculo do targetRow com base na região
+        const trianglesToHighlight = shape.map(({ x, y, orientation }) => {
             let targetRow = centralRow + y;
-
-            // Calcular targetCol de forma mais precisa
             let targetCol = centralCol + x;
 
+            // Ajusta a lógica de alinhamento da coluna para formas específicas
             if (
                 shape.some((triangle) => triangle.y === 0) &&
                 shape.some((triangle) => triangle.y === 1)
@@ -568,6 +561,7 @@ const Board = () => {
         // Filtra nulos e atualiza os destaques
         setHighlightedTriangles(trianglesToHighlight.filter(Boolean));
     };
+
 
 
 
