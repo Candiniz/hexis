@@ -484,29 +484,38 @@ const Board = () => {
             const isUp = triangle.classList.contains("up"); // Verifica a classe "up" ou "down"
             return { rect, uniqueIndex, isUp };
         });
-
+    
+        // Verifica se estamos lidando com um evento de touch
+        const isTouchEvent = center.identifier !== undefined; // Assumindo que `center` pode conter informações de toque
+    
+        // Corrige as coordenadas para touch, se necessário
+        const adjustedCenter = {
+            x: isTouchEvent ? center.clientX : center.x,
+            y: isTouchEvent ? center.clientY : center.y,
+        };
+    
         const centralTriangle = boardTriangles.find(({ rect }) => {
             return (
-                center.x > rect.left &&
-                center.x < rect.right &&
-                center.y > rect.top &&
-                center.y < rect.bottom
+                adjustedCenter.x > rect.left &&
+                adjustedCenter.x < rect.right &&
+                adjustedCenter.y > rect.top &&
+                adjustedCenter.y < rect.bottom
             );
         });
-
+    
         if (!centralTriangle) {
             setHighlightedTriangles([]);
             return;
         }
-
+    
         const [centralRow, centralCol] = centralTriangle.uniqueIndex
             .split("-")
             .map(Number);
-
+    
         const triangleMap = new Map(
             boardTriangles.map((triangle) => [triangle.uniqueIndex, triangle])
         );
-
+    
         const trianglesToHighlight = shape.map(({ x, y, orientation, uniqueIndex }) => {
             // Função para verificar se o uniqueIndex pertence à região nordeste
             // eslint-disable-next-line no-unused-vars
@@ -519,13 +528,13 @@ const Board = () => {
                     (row === 3 && col >= 14)
                 );
             }
-
+    
             // Definindo a lógica de cálculo do targetRow com base na região
             let targetRow = centralRow + y;
-
+    
             // Calcular targetCol de forma mais precisa
             let targetCol = centralCol + x;
-
+    
             if (
                 shape.some((triangle) => triangle.y === 0) &&
                 shape.some((triangle) => triangle.y === 1)
@@ -540,7 +549,7 @@ const Board = () => {
                         ? Math.floor((triangleCounts[centralRow] - triangleCounts[targetRow]) / 2)
                         : 0;
             }
-
+    
             if (
                 targetRow >= 0 &&
                 targetRow < triangleCounts.length &&
@@ -548,7 +557,7 @@ const Board = () => {
                 targetCol < triangleCounts[targetRow]
             ) {
                 const targetTriangle = triangleMap.get(`${targetRow}-${targetCol}`);
-
+    
                 if (
                     targetTriangle &&
                     targetTriangle.isUp === (orientation === "up") &&
@@ -559,15 +568,16 @@ const Board = () => {
             }
             return null;
         });
-
+    
         // Adicionando condição para manter o destaque anterior até haver uma nova posição válida
         if (trianglesToHighlight.some((item) => item === null)) {
             return; // Não atualiza os destaques se houver uma posição inválida
         }
-
+    
         // Filtra nulos e atualiza os destaques
         setHighlightedTriangles(trianglesToHighlight.filter(Boolean));
     };
+    
 
 
 
