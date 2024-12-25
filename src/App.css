@@ -15,6 +15,11 @@ body {
   font-family: "Roboto Mono", serif;
 }
 
+@media (max-width: 600px) {
+  body {
+    overflow: hidden;
+  }
+}
 
 .container {
   position: relative;
@@ -41,7 +46,7 @@ body {
 }
 
 .doomed {
-  opacity: 50%;
+  opacity: 20%;
   pointer-events: none;
 }
 
@@ -84,12 +89,42 @@ body {
   left: 7vw;
 }
 
+.home_restart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 50px;
+  font-size: 50px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.home_restart a:hover {
+  color: #e1ac37;
+  transition: all 0.3s ease-in-out;
+  scale: 1.1;
+}
+
+.home_restart a {
+  text-decoration: none;
+  /* Remover sublinhado */
+  color: inherit;
+  /* Garantir que a cor não seja sobrescrita pelo link */
+}
+
+.home_restart a:hover {
+  text-decoration: none;
+  /* Remover sublinhado ao passar o mouse */
+}
+
 .scoreboard {
   position: absolute;
   display: flex;
   flex-direction: column;
   right: 110px;
-  top: calc(50% - 150px);
+  top: calc(50% - 220px);
   color: white;
   font-size: 70px;
   text-align: center;
@@ -345,6 +380,17 @@ body {
   z-index: -1;
   fill: #222;
   transform-origin: center;
+
+  stroke: #ffa347;
+  /* Cor da cauda (laranja vermelha) */
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-dasharray: 500;
+  /* Tamanho do traço (largura do contorno) */
+  stroke-dashoffset: 500;
+  /* Começa com o traço escondido */
+  animation: comet 2s linear infinite, neon 1.5s ease-in-out infinite alternate;
+  /* Animação */
 }
 
 .hexSVG2 {
@@ -355,6 +401,27 @@ body {
   z-index: -2;
   fill: #2424244b;
   transform-origin: center;
+}
+
+.hexSVG2.doAbarrelRoll {
+  animation: rotateBackAndForth 0.5s ease-in-out;
+}
+
+@keyframes rotateBackAndForth {
+  0% {
+    transform: translate(-50%, -50%) scale(0.85) rotate(0deg);
+    /* Começa na posição original */
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(0.85) rotate(360deg);
+    /* Gira 360 graus */
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(0.85) rotate(0deg);
+    /* Retorna à posição original */
+  }
 }
 
 .hexSVG_scaling {
@@ -422,11 +489,53 @@ body {
   color: #f632f6;
 }
 
+.trophy {
+  position: fixed;
+  top: -100px;
+  left: 30%;
+  width: 100vw;
+  min-width: 100vw;
+  z-index: -2;
+  opacity: 0.05;
+}
+
+.sad {
+  position: fixed;
+  top: -100px;
+  left: 30%;
+  width: 100vw;
+  min-width: 100vw;
+  z-index: -2;
+  opacity: 0.2;
+}
+
+@media (max-width: 600px) {
+  .trophy {
+    position: fixed;
+    top: -100px;
+    left: 30%;
+    width: 100vw;
+    min-width: 100vw;
+    z-index: -2;
+    opacity: 0.05;
+  }
+
+  .sad {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: -2;
+    opacity: 0.3;
+    object-fit: cover;
+  }
+}
+
 .game-over {
   width: 100vw;
   height: 100vh;
-  background-color: black;
-  color: #e1ac37;
+  background-color: #111111c9;
+  color: #e14e37;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -436,15 +545,20 @@ body {
 
 .game-over img {
   width: 500px;
-  margin-bottom: -60px;
+  max-width: 80vw;
+  margin-bottom: 20px;
+}
+
+.game-over span {
+  font-weight: bold;
 }
 
 .game-over button {
   margin-top: 40px;
-  padding: 5px 20px ;
+  padding: 5px 20px;
   border-radius: 5px;
   background: transparent;
-  border: 1px solid  #ffba24;
+  border: 1px solid #e14e37;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -452,9 +566,36 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-size: 20px;
   font-family: "Roboto Mono", serif;
-  color: #ffba24;
+  color: #e14e37;
   animation: tippy_pulse 1.5s ease-in-out infinite;
 }
+
+.overlay_gameOver {
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  /* Cor de fundo do overlay */
+  opacity: 1;
+  /* Inicialmente opaco */
+  transition: opacity 1s ease-out;
+  /* Transição suave de 1 segundo */
+  z-index: 1000;
+  /* Ajuste conforme necessário */
+}
+
+.overlay_gameOver.hey {
+  opacity: 0;
+  /* Quando isGameOver for true, a opacidade vai para 0 */
+}
+
+.overlay_gameOver.bye {
+  display: none;
+}
+
 
 .ranking-container {
   color: #e1ac37;
@@ -464,7 +605,107 @@ body {
   margin-bottom: 20px;
 }
 
-.recover_passworld {
+.recover_password {
   text-decoration: none;
   color: white;
+  margin-bottom: 100px;
+}
+
+
+.comet-trail {
+  fill: none;
+  stroke: #ffb84761;
+  /* Cor da cauda (laranja vermelha) */
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 500;
+  /* Tamanho do traço (largura do contorno) */
+  stroke-dashoffset: 500;
+  /* Começa com o traço escondido */
+  animation: comet 2s linear infinite;
+  /* Animação */
+}
+
+@keyframes comet {
+  0% {
+    stroke-dashoffset: 500;
+    /* O traço começa do final */
+  }
+
+  100% {
+    stroke-dashoffset: -500;
+    /* O traço vai para a frente */
+  }
+}
+
+@keyframes neon {
+  0% {
+    filter: drop-shadow(0 0 5px #ffb84761) drop-shadow(0 0 10px #ffb84761) drop-shadow(0 0 10px #ffb84761);
+  }
+
+  100% {
+    filter: drop-shadow(0 0 10px #ffb84761) drop-shadow(0 0 30px #ffb84761) drop-shadow(0 0 30px #ffb84761);
+  }
+}
+
+.resetPasswordForm {
+  font-family: "Roboto Mono", serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 500px;
+  max-width: 85vw;
+  /* Limitar a largura para que o formulário não ocupe toda a tela */
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #191919d6;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #aaa;
+}
+
+.resetPasswordForm input,
+.resetPasswordForm button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  /* Espaçamento entre os campos */
+  border: 1px solid #4a4a4a;
+  /* Bordas finas e suaves */
+  border-radius: 4px;
+  /* Bordas arredondadas */
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  /* Fonte limpa */
+  transition: all 0.3s ease;
+  /* Transição suave */
+}
+
+.resetPasswordForm input:focus,
+.resetPasswordForm button:hover {
+  border-color: #bebebe;
+  outline: none;
+}
+
+.resetPasswordForm input::placeholder {
+  color: #3c3c3c;
+  text-align: center;
+  font-size: small;
+  font-family: "Roboto Mono", serif;
+}
+
+.resetPasswordForm input {
+  background-color: #818181;
+  margin-top: 15px;
+}
+
+.resetPasswordForm button {
+  background-color: #4d4d4d;
+  font-family: "Roboto Mono", serif;
+  color: #191919;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  /* Remove a borda padrão */
 }

@@ -55,6 +55,7 @@ const Ranking = () => {
           </li>
         ))}
       </ol>
+      <img alt="Sad Player" src="/trophy.png" className="trophy" />
     </div>
   );
 };

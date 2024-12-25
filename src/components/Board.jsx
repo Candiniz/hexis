@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { DiagonalsUp, DiagonalsDown } from './Diagonals.js';
 import piecesMap from "./highlightedTriangles.js";
 import Piece from "./Piece";
 import Background from "./Background.jsx";
 import { ReactComponent as HexagonSVG } from './hexagon.svg';
+
+import { IoIosHome } from "react-icons/io";
+import { MdOutlineRestartAlt } from "react-icons/md";
+
 
 import { ref, get, set } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
@@ -24,6 +28,7 @@ const Board = () => {
     const [animatedPieces, setAnimatedPieces] = useState([]);
     const [isBoardScaling, setIsBoardScaling] = useState(false);
     const [newPieces, setNewPieces] = useState([]);
+    const [isRowPoint, setIsRowPoint] = useState(false)
 
     const [score, setScore] = useState(0);
     const [highestScore, setHighestScore] = useState(null);
@@ -38,6 +43,12 @@ const Board = () => {
     const nickname = localStorage.getItem("nickname") || location.state?.nickname || ""
 
     const navigate = useNavigate(); // Para navegação ao GameOver
+
+
+    const handleRestart = () => {
+        window.location.reload();
+    };
+
 
     const usePreventReload = () => {
         useEffect(() => {
@@ -127,32 +138,33 @@ const Board = () => {
     ];
 
     const shapeColors = {
-        triangle1: "#ff9999",
-        triangle2: "#ffcc99",
-        unique1: "#9eb38b",
-        unique2: "#ffee99",
-        lozenge1: "#ab5656",
-        lozenge2: "#aba356",
-        lozenge3: "#658f4f",
-        trapezoid1: "#59658e",
-        trapezoid2: "#9fdedb",
-        trapezoid1_vertical_a: "#98b68a",
-        trapezoid1_vertical_b: "#98b68a",
-        trapezoid2_vertical_a: "#9fdedb",
-        trapezoid2_vertical_b: "#98b68a",
-        hexagon: "#9fdedb",
-        parallelogram1: "#a3c4e9",
-        parallelogram2: "#59658e",
-        parallelogram1_vertical_a: "#98b68a",
-        parallelogram2_vertical_a: "#59658e",
-        parallelogram1_vertical_b: "#98b68a",
-        parallelogram2_vertical_b: "#59658e",
-        semiHexagon1: "#b269b9",
-        semiHexagon2: "#a17cba",
-        semiHexagon3: "#f3b9da",
-        semiHexagon4: "#d5e6a7",
-        semiHexagon5: "#54cdc3",
+        triangle1: "#ff3b3b",   // Vermelho vibrante
+        triangle2: "#ff8333",   // Laranja quente
+        unique1: "#33ff57",     // Verde neon
+        unique2: "#fffc33",     // Amarelo vibrante
+        lozenge1: "#ff66cc",    // Rosa choque
+        lozenge2: "#66ccff",    // Azul claro vibrante
+        lozenge3: "#ff3366",    // Rosa vibrante
+        trapezoid1: "#ff007f",  // Magenta forte
+        trapezoid2: "#00bfff",  // Azul celeste vibrante
+        trapezoid1_vertical_a: "#ffcc00",  // Amarelo intenso
+        trapezoid1_vertical_b: "#ff6600",  // Laranja escuro
+        trapezoid2_vertical_a: "#00ffcc",  // Verde água
+        trapezoid2_vertical_b: "#cc00ff",  // Roxo vibrante
+        hexagon: "#33ccff",     // Azul claro brilhante
+        parallelogram1: "#ff00ff", // Roxo forte
+        parallelogram2: "#ff6600", // Laranja mais forte
+        parallelogram1_vertical_a: "#ff0033", // Vermelho-rosado
+        parallelogram2_vertical_a: "#ffccff", // Rosa claro
+        parallelogram1_vertical_b: "#00ff99", // Verde neon
+        parallelogram2_vertical_b: "#0099ff", // Azul claro
+        semiHexagon1: "#ff1493",  // Rosa profundo
+        semiHexagon2: "#32cd32",  // Verde limão
+        semiHexagon3: "#ff6347",  // Tom de vermelho laranja
+        semiHexagon4: "#ffd700",  // Amarelo dourado
+        semiHexagon5: "#ff00b3",  // Magenta vibrante
     };
+
 
 
 
@@ -382,9 +394,11 @@ const Board = () => {
             }
         });
         if (completedLines > 0) {
-            // Ativa o efeito de escala do tabuleiro
+            // Ativa o efeito de escala do tabuleiro e do hexagono
             setIsBoardScaling(true);
+            setIsRowPoint(true)
             setTimeout(() => setIsBoardScaling(false), 200);
+            setTimeout(() => setIsRowPoint(false), 500);
         }
     };
 
@@ -656,11 +670,20 @@ const Board = () => {
                     <span>Atual pontuação</span>
                     <p className="actualscore">{score}</p>
                 </div>
+                <div className="home_restart">
+                    <Link onClick={handleRestart}><MdOutlineRestartAlt /></Link>
+                    <Link to="/"><IoIosHome /></Link>
+                </div>
             </div>
             <div className={`overlay ${isGameOver ? "visible" : ""}`} />
-            {/* <HexagonSVG className={`hexSVG ${isGameOver ? "hexSVG_scaling" : ""}`} />
-            <HexagonSVG className={`hexSVG2 ${isGameOver ? "hexSVG_scaling2" : ""}`} />
-            <Background /> */}
+            <HexagonSVG className={`hexSVG ${isGameOver ? "hexSVG_scaling" : ""}`} />
+            <div className={`hexSVG2 
+                ${isGameOver ? "hexSVG_scaling2" : ""}
+                ${isRowPoint ? "doAbarrelRoll" : ""}
+            `}>
+                <HexagonSVG style={{ fill: "#2222227a" }} />
+            </div>
+            <Background />
         </>
     );
 };

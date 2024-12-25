@@ -34,25 +34,25 @@ const Piece = ({
       <g className={styles.triangle1}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#ff9999"
+          fill="#ff3b3b"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#ff9999"
+          fill="#ff3b3b"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#ff9999"
+          fill="#ff3b3b"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 2},0 L${scaledSize},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#ff9999"
+          fill="#ff3b3b"
           stroke="#222"
           strokeWidth="1"
         />
@@ -63,25 +63,25 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M0,${height * 2} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#ffcc99"
+          fill="#ff8333"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},${height * 2} L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#ffcc99"
+          fill="#ff8333"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#ffcc99"
+          fill="#ff8333"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 2},${height * 2} L${scaledSize},${height * 2} L${scaledSize * 1.5},${height} Z`}
-          fill="#ffcc99"
+          fill="#ff8333"
           stroke="#222"
           strokeWidth="1"
         />
@@ -92,7 +92,7 @@ const Piece = ({
       <g className={styles.unique1}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#9eb38b"
+          fill="#33ff57"
           stroke="#222"
           strokeWidth="1"
         />
@@ -103,7 +103,7 @@ const Piece = ({
       <g className={styles.unique2}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#ffee99"
+          fill="#fffc33"
           stroke="#222"
           strokeWidth="1"
         />
@@ -115,19 +115,19 @@ const Piece = ({
         transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#ff007f"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#ff007f"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#59658e"
+          fill="#ff007f"
           stroke="#222"
           strokeWidth="1"
         />
@@ -138,19 +138,19 @@ const Piece = ({
         transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#00bfff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#9fdedb"
+          fill="#00bfff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize * 2},0 L${scaledSize * 2.5},${height} Z`}
-          fill="#9fdedb"
+          fill="#00bfff"
           stroke="#222"
           strokeWidth="1"
         />
@@ -160,19 +160,19 @@ const Piece = ({
       <g className={styles.trapezoid1_vertical_a}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#ffcc00"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#ffcc00"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#98b68a"
+          fill="#ffcc00"
           stroke="#222"
           strokeWidth="1"
         />
@@ -185,19 +185,19 @@ const Piece = ({
       >
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#9fdedb"
+          fill="#00ffcc"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#00ffcc"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#00ffcc"
           stroke="#222"
           strokeWidth="1"
         />
@@ -208,19 +208,19 @@ const Piece = ({
       <g className={styles.trapezoid1_vertical_b}>
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#98b68a"
+          fill="#ff6600"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#ff6600"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#ff6600"
           stroke="#222"
           strokeWidth="1"
         />
@@ -233,19 +233,19 @@ const Piece = ({
       >
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#cc00ff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#cc00ff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#9fdedb"
+          fill="#cc00ff"
           stroke="#222"
           strokeWidth="1"
         />
@@ -257,13 +257,13 @@ const Piece = ({
       <g className={styles.lozango1}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#ab5656"
+          fill="#ff66cc"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#ab5656"
+          fill="#ff66cc"
           stroke="#222"
           strokeWidth="1"
         />
@@ -274,13 +274,13 @@ const Piece = ({
         transform={`scale(-1, 1) translate(-${scaledSize * 1.5}, 0)`}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#aba356"
+          fill="#66ccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#aba356"
+          fill="#66ccff"
           stroke="#222"
           strokeWidth="1"
         />
@@ -290,13 +290,13 @@ const Piece = ({
       <g className={styles.lozango3}>
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#658f4f"
+          fill="#ff3366"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#658f4f"
+          fill="#ff3366"
           stroke="#222"
           strokeWidth="1"
         />
@@ -307,25 +307,25 @@ const Piece = ({
       <g className={styles.paralelogramo1}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#598e8a"
+          fill="#ff00ff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#598e8a"
+          fill="#ff00ff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#598e8a"
+          fill="#ff00ff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize * 2},0 L${scaledSize * 2.5},${height} Z`}
-          fill="#598e8a"
+          fill="#ff00ff"
           stroke="#222"
           strokeWidth="1"
         />
@@ -336,25 +336,25 @@ const Piece = ({
         transform={`scale(-1, 1) translate(-${scaledSize * 1.5 + 15}, 0)`}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#ff6600"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#ff6600"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#59658e"
+          fill="#ff6600"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize * 2},0 L${scaledSize * 2.5},${height} Z`}
-          fill="#59658e"
+          fill="#ff6600"
           stroke="#222"
           strokeWidth="1"
         />
@@ -364,25 +364,25 @@ const Piece = ({
       <g className={styles.parallelogram1_vertical_a}>
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#98b68a"
+          fill="#ff0033"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#ff0033"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#ff0033"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#98b68a"
+          fill="#ff0033"
           stroke="#222"
           strokeWidth="1"
         />
@@ -395,25 +395,25 @@ const Piece = ({
       >
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#59658e"
+          fill="#ffccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#ffccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#ffccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#59658e"
+          fill="#ffccff"
           stroke="#222"
           strokeWidth="1"
         />
@@ -423,25 +423,25 @@ const Piece = ({
       <g className={styles.paralelogramoVertical}>
         <path
           d={`M${scaledSize * 2},0 L${scaledSize * 1.5},${-height} L${scaledSize},0 Z`}
-          fill="#98b68a"
+          fill="#00ff99"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#98b68a"
+          fill="#00ff99"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#00ff99"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#98b68a"
+          fill="#00ff99"
           stroke="#222"
           strokeWidth="1"
         />
@@ -453,25 +453,25 @@ const Piece = ({
 
         <path
           d={`M${scaledSize * 2},0 L${scaledSize * 1.5},${-height} L${scaledSize},0 Z`}
-          fill="#59658e"
+          fill="#0099ff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize / 1},0 L${scaledSize * 2},0 L${scaledSize * 1.5},${height} Z`}
-          fill="#59658e"
+          fill="#0099ff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#0099ff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#59658e"
+          fill="#0099ff"
           stroke="#222"
           strokeWidth="1"
         />
@@ -482,37 +482,37 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#33ccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#33ccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#33ccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#9fdedb"
+          fill="#33ccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#33ccff"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#9fdedb"
+          fill="#33ccff"
           stroke="#222"
           strokeWidth="1"
         />
@@ -523,25 +523,25 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#b269b9"
+          fill="#ff1493"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#b269b9"
+          fill="#ff1493"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#b269b9"
+          fill="#ff1493"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#b269b9"
+          fill="#ff1493"
           stroke="#222"
           strokeWidth="1"
         />
@@ -551,25 +551,25 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#a17cba"
+          fill="#32cd32"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#a17cba"
+          fill="#32cd32"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#a17cba"
+          fill="#32cd32"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#a17cba"
+          fill="#32cd32"
           stroke="#222"
           strokeWidth="1"
         />
@@ -579,25 +579,25 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#f3b9da"
+          fill="#ff6347"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#f3b9da"
+          fill="#ff6347"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#f3b9da"
+          fill="#ff6347"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#f3b9da"
+          fill="#ff6347"
           stroke="#222"
           strokeWidth="1"
         />
@@ -607,25 +607,25 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M${scaledSize},0 L${scaledSize * 1.5},${height} L${scaledSize / 2},${height} Z`}
-          fill="#d5e6a7"
+          fill="#ffd700"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M${scaledSize * 1.5},${height} L${scaledSize},${height * 2} L${scaledSize / 2},${height} Z`}
-          fill="#d5e6a7"
+          fill="#ffd700"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#d5e6a7"
+          fill="#ffd700"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#d5e6a7"
+          fill="#ffd700"
           stroke="#222"
           strokeWidth="1"
         />
@@ -635,26 +635,26 @@ const Piece = ({
       <g className={styles.hexagono}>
         <path
           d={`M0,0 L${scaledSize},0 L${scaledSize / 2},${height} Z`}
-          fill="#54cdc3"
+          fill="#ff00b3"
           stroke="#222"
           strokeWidth="1"
         />
 
         <path
           d={`M0,${height * 2} L${scaledSize / 2},${height} L${scaledSize},${height * 2} Z`}
-          fill="#54cdc3"
+          fill="#ff00b3"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,${height * 2} L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#54cdc3"
+          fill="#ff00b3"
           stroke="#222"
           strokeWidth="1"
         />
         <path
           d={`M0,0 L${-scaledSize / 2},${height} L${scaledSize / 2},${height} Z`}
-          fill="#54cdc3"
+          fill="#ff00b3"
           stroke="#222"
           strokeWidth="1"
         />
@@ -855,10 +855,6 @@ const Piece = ({
     const touch = event.touches[0];
     setActiveTouchId(touch.identifier);
     setIsDragging(true);
-
-    // Ajusta o cálculo para a escala da viewport
-    const rect = pieceRef.current.getBoundingClientRect();
-
 
     // Corrige o valor para a escala da tela
     pieceRef.current.dragStartX = touch.clientX;

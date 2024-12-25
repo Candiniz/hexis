@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useNickname } from "../context/NicknameContext"; // Acessando o contexto
 import { ref, get, set } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
 import { getAuth } from "firebase/auth";
+import Background from "./Background";
 
 const GameOver = () => {
+  const [isGameOver, setIsGameOver] = useState(false)
+  const [showOverlay, setShowOverlay] = useState(true)
+
   const [newestScore, setNewestScore] = useState(null);
   const [highestScore, setHighestScore] = useState(null);
   const location = useLocation();
@@ -13,11 +16,21 @@ const GameOver = () => {
   const [user, setUser] = useState(null);  // Estado para armazenar o usuário autenticado
   const nickname = localStorage.getItem("nickname")
 
+  useEffect(() => {
+    setIsGameOver(true);
+
+    const timer = setTimeout(() => {
+      setShowOverlay(false); // Remove a div do DOM
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Verifica o usuário autenticado assim que o componente é montado
   useEffect(() => {
     const auth = getAuth();
     const currentUser = auth.currentUser;
-    
+
     if (currentUser) {
       setUser(currentUser);  // Atualiza o estado com o usuário autenticado
     }
@@ -81,18 +94,27 @@ const GameOver = () => {
 
   return (
     <div className="game-over">
-      <img alt="Game Over" src="/GameOver.gif" />
+      <div className={`
+        overlay_gameOver 
+        ${isGameOver ? "hey" : ""}
+        ${!showOverlay ? "bye" : ""}
+      `} />
+      <img alt="Game Over" src="/game-over-game.gif" />
       {newestScore !== null ? (
-        <p>Your Newest Score: {newestScore}</p>
+        <p>Your Newest Score: <span>{newestScore}</span></p>
       ) : (
         <p>No score available</p>
       )}
       {highestScore !== null ? (
-        <p>Your Highest Score: {highestScore}</p>
+        <p>Your Highest Score: <span>{highestScore}</span></p>
       ) : (
         <p>No highest score available</p>
       )}
       <button onClick={() => window.location.href = "/"}>Play Again</button>
+      <div>
+        <img alt="Sad Player" src="/sad.png" className="sad" />
+      </div>
+      <Background />
     </div>
   );
 };

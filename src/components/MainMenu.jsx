@@ -200,22 +200,6 @@ function MainMenu() {
             <div className="menu-options">
                 <input
                     className="input_main"
-                    type="text"
-                    placeholder="Escolha um nickname (novo ou existente)"
-                    value={nicknameInput}
-                    onChange={(e) => setNicknameInput(e.target.value)}
-                    list="nickname-suggestions"
-                />
-                <datalist id="nickname-suggestions">
-                    {nicknames.map((nickname, index) => (
-                        <option key={index} value={nickname}>
-                            {nickname}
-                        </option>
-                    ))}
-                </datalist>
-
-                <input
-                    className="input_main"
                     type="email"
                     placeholder="Entre com seu email"
                     value={email}
@@ -231,6 +215,22 @@ function MainMenu() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
+                <input
+                    style={{ marginTop: "10px" }}
+                    className="input_main"
+                    type="text"
+                    placeholder="Escolha um nickname (novo ou existente)"
+                    value={nicknameInput}
+                    onChange={(e) => setNicknameInput(e.target.value)}
+                    list="nickname-suggestions"
+                />
+                <datalist id="nickname-suggestions">
+                    {nicknames.map((nickname, index) => (
+                        <option key={index} value={nickname}>
+                            {nickname}
+                        </option>
+                    ))}
+                </datalist>
                 <div className="btn-div">
                     <button className="menu-button" onClick={handleStart}>Jogar!</button>
                     <Link to="/ranking" className="menu-button-link">
@@ -238,7 +238,7 @@ function MainMenu() {
                     </Link>
                 </div>
                 <p>
-                    <Link to="/recover-password" className="recover_passworld">Esqueceu sua senha?</Link>
+                    <Link to="/recover-password" className="recover_password">Esqueceu sua senha?</Link>
                 </p>
             </div>
             <Background />
