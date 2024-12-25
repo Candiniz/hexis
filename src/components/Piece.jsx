@@ -858,12 +858,11 @@ const Piece = ({
 
     // Ajusta o cálculo para a escala da viewport
     const rect = pieceRef.current.getBoundingClientRect();
-    const scaleX = window.innerWidth / document.documentElement.clientWidth;
-    const scaleY = window.innerHeight / document.documentElement.clientHeight;
+
 
     // Corrige o valor para a escala da tela
-    pieceRef.current.dragStartX = touch.clientX - rect.left * scaleX;
-    pieceRef.current.dragStartY = touch.clientY - rect.top * scaleY;
+    pieceRef.current.dragStartX = touch.clientX;
+    pieceRef.current.dragStartY = touch.clientY;
 
     event.preventDefault();
   };
