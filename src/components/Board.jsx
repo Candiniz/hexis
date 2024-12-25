@@ -272,7 +272,7 @@ const Board = () => {
             scoreSound.play()
 
             // Adiciona 1 ponto ao score por colocar uma peça
-            setScore((prevScore) => Math.round(prevScore + highlightedTriangles.length / 2));
+            setScore((prevScore) => Math.round(prevScore + highlightedTriangles.length));
 
             // Remove a peça da lista
             setPieceShapes((prevShapes) => {
@@ -632,7 +632,6 @@ const Board = () => {
                             `}
                             key={`${resetKey}-${index}`}>
                             <Piece
-
                                 shape={shape}
                                 size={size}
                                 scaleFactor={1}

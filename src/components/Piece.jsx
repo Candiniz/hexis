@@ -17,6 +17,7 @@ const Piece = ({
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 }); // Posição da peça
   const [isDragging, setIsDragging] = useState(false); // Estado de arrasto
+  const [activeTouchId, setActiveTouchId] = useState(null);
 
 
   const pieceRef = useRef(null);
@@ -448,8 +449,8 @@ const Piece = ({
     ),
     parallelogram2_vertical_b: (
       <g className={styles.paralelogramoVertical}
-      transform={`scale(-1, 1) translate(-${scaledSize * 2.0}, -10)`}>
-        
+        transform={`scale(-1, 1) translate(-${scaledSize * 2.0}, -10)`}>
+
         <path
           d={`M${scaledSize * 2},0 L${scaledSize * 1.5},${-height} L${scaledSize},0 Z`}
           fill="#59658e"
@@ -845,25 +846,31 @@ const Piece = ({
   const handleMouseUp = () => {
     setIsDragging(false);
 
-    if (onDrop) {
-      onDrop(index);
-    } else {
-      setPosition({ x: 0, y: 0 });
-    }
+    onDrop(index);
+
   };
 
   // Lógica para os eventos de toque
   const handleTouchStart = (event) => {
-    const touch = event.touches[0]; // Pegando o primeiro toque
+    const touch = event.touches[0];
+    setActiveTouchId(touch.identifier);
     setIsDragging(true);
-    pieceRef.current.dragStartX = touch.clientX - position.x;
-    pieceRef.current.dragStartY = touch.clientY - position.y;
+
+    const rect = pieceRef.current.getBoundingClientRect();
+    pieceRef.current.dragStartX = touch.clientX - rect.left;
+    pieceRef.current.dragStartY = touch.clientY - rect.top;
+
+    event.preventDefault(); // Previne comportamentos indesejados, como scroll
   };
 
   const handleTouchMove = (event) => {
-    if (!isDragging) return;
+    if (!isDragging || activeTouchId === null) return;
 
-    const touch = event.touches[0]; // Pegando o primeiro toque
+    const touch = Array.from(event.touches).find(
+      (t) => t.identifier === activeTouchId
+    );
+    if (!touch) return;
+
     const newX = touch.clientX - pieceRef.current.dragStartX;
     const newY = touch.clientY - pieceRef.current.dragStartY;
 
@@ -873,18 +880,9 @@ const Piece = ({
     const groupElement = pieceRef.current.parentElement;
     const transform = window.getComputedStyle(groupElement).transform;
 
-    let centerX, centerY;
-    const hasYOne = shapes[shape].some((point) => point.y === 1);
-
-    if (hasYOne) {
-      const matrix = new DOMMatrix(transform);
-      centerX = left + width / 2 + 45 + matrix.e;
-      centerY = top + height / 2 - 15 + matrix.f;
-    } else {
-      const matrix = new DOMMatrix(transform);
-      centerX = left + width / 2 + matrix.e;
-      centerY = top + height / 2 + matrix.f;
-    }
+    const matrix = new DOMMatrix(transform);
+    const centerX = left + width / 2 + matrix.e;
+    const centerY = top + height / 2 + matrix.f;
 
     onHover({
       center: { x: centerX, y: centerY },
@@ -892,14 +890,15 @@ const Piece = ({
     });
   };
 
-  const handleTouchEnd = () => {
-    setIsDragging(false);
+  const handleTouchEnd = (event) => {
+    const endedTouch = Array.from(event.changedTouches).find(
+      (t) => t.identifier === activeTouchId
+    );
+    if (!endedTouch) return;
 
-    if (onDrop) {
-      onDrop(index);
-    } else {
-      setPosition({ x: 0, y: 0 });
-    }
+    setIsDragging(false);
+    setActiveTouchId(null);
+    onDrop(index);
   };
 
 
@@ -909,9 +908,9 @@ const Piece = ({
     window.addEventListener("mouseup", handleMouseUp);
 
     // Adicionando eventos de toque
-    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleTouchEnd);
-    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchcancel", handleTouchEnd);
 
     return () => {
       // Remover os eventos de mouse
@@ -923,7 +922,7 @@ const Piece = ({
       window.removeEventListener("touchend", handleTouchEnd);
       window.removeEventListener("touchstart", handleTouchStart);
     };
-  }, [isDragging]);
+  }, [isDragging, activeTouchId]);
 
   return (
     <motion.div
@@ -938,6 +937,8 @@ const Piece = ({
         opacity: 0.7,
       }}
       onMouseUp={handleMouseUp}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="svg-container"
       ref={pieceRef}
@@ -947,11 +948,10 @@ const Piece = ({
         left: position.x + positionX,
         cursor: isDragging ? "grabbing" : "grab",
       }}
-      onMouseDown={handleMouseDown}
+
     >
       <svg
         className="svg"
-        onMouseUp={handleMouseUp}
         viewBox={`${-scaledSize / 2} ${-height / 2} ${scaledSize * 2.5} ${height * 2}`}
         style={{
           width: scaledSize * 2.5,
