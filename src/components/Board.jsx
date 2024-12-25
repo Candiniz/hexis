@@ -667,9 +667,9 @@ const Board = () => {
                 </div>
             </div>
             <div className={`overlay ${isGameOver ? "visible" : ""}`} />
-            <HexagonSVG className={`hexSVG ${isGameOver ? "hexSVG_scaling" : ""}`} />
+            {/* <HexagonSVG className={`hexSVG ${isGameOver ? "hexSVG_scaling" : ""}`} />
             <HexagonSVG className={`hexSVG2 ${isGameOver ? "hexSVG_scaling2" : ""}`} />
-            <Background />
+            <Background /> */}
         </>
     );
 };
