@@ -7,7 +7,6 @@ import Piece from "./Piece";
 import Background from "./Background.jsx";
 import { ReactComponent as HexagonSVG } from './hexagon.svg';
 
-import { getAuth } from "firebase/auth";
 import { ref, get, set } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
 import { useAuth } from "../context/AuthContext";
@@ -32,11 +31,13 @@ const Board = () => {
     const [doomedPieces, setDoomedPieces] = useState([]);
     const [isGameOver, setIsGameOver] = useState(false); // Estado para Game Over
     const [randomDurations, setRandomDurations] = useState([]); // Para tempos aleatórios
-    const user = getAuth().currentUser;
+    const { user } = useAuth();
 
-    const navigate = useNavigate(); // Para navegação ao GameOver
+
     const location = useLocation();
     const nickname = localStorage.getItem("nickname") || location.state?.nickname || ""
+
+    const navigate = useNavigate(); // Para navegação ao GameOver
 
     const usePreventReload = () => {
         useEffect(() => {
@@ -508,6 +509,7 @@ const Board = () => {
 
         const trianglesToHighlight = shape.map(({ x, y, orientation, uniqueIndex }) => {
             // Função para verificar se o uniqueIndex pertence à região nordeste
+            // eslint-disable-next-line no-unused-vars
             function isNordeste(uniqueIndex) {
                 const [row, col] = centralTriangle.uniqueIndex.split("-").map(Number);
                 return (

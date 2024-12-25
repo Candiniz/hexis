@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useNickname } from "../context/NicknameContext"; // Importando o contexto
 import { ref, set, get } from "firebase/database";
 import { useAuth } from "../context/AuthContext";
-import { database, auth } from "../firebase/firebaseConfig";
+import { database } from "../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import Background from "./Background";
 import Popper from "./Popper";
@@ -126,19 +126,19 @@ function MainMenu() {
 
     const handleStart = async (e) => {
         e.preventDefault();
-    
+
         if (nicknameInput && email && password) {
             try {
                 let userCredential = null;
-    
+
                 // Primeiro tenta criar o usuário
                 try {
                     userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
-    
+
                     // Salva o nickname após a criação do usuário
                     await saveNickname({ nickname: nicknameInput, e, setNickname, user });
-    
+
                     // Atualiza o nickname no localStorage e navega para o jogo com o nickname
                     localStorage.setItem("nickname", nicknameInput); // Atualiza o localStorage com o nickname
                     navigate("/game", { state: { nickname: nicknameInput } }); // Envia o nickname para a página do jogo
@@ -147,16 +147,15 @@ function MainMenu() {
                         // Se o email já estiver em uso, faz login
                         try {
                             userCredential = await signInWithEmailAndPassword(auth, email, password);
-                            const user = userCredential.user;
-    
+
                             // Aguarde até que o auth.currentUser seja atualizado
                             if (!auth.currentUser) {
                                 await new Promise(resolve => setTimeout(resolve, 1000)); // Aguarda 1 segundo para garantir a atualização do estado do usuário
                             }
-    
+
                             // Agora que o usuário está autenticado, você pode buscar os nicknames
                             await fetchNicknamesByEmail(email);
-    
+
                             // Atualiza o nickname no localStorage e navega para o jogo com o nickname
                             localStorage.setItem("nickname", nicknameInput); // Atualiza o localStorage com o nickname
                             navigate("/game", { state: { nickname: nicknameInput } }); // Envia o nickname para a página do jogo
@@ -177,10 +176,10 @@ function MainMenu() {
             alert("Por favor, entre com seu nickname, email e senha para jogar!");
         }
     };
-    
-    
-    
-    
+
+
+
+
 
     return (
         <div className="main-menu">
@@ -238,6 +237,9 @@ function MainMenu() {
                         Ranking Global
                     </Link>
                 </div>
+                <p>
+                    <Link to="/recover-password">Esqueceu sua senha?</Link>
+                </p>
             </div>
             <Background />
         </div>

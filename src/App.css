@@ -421,21 +421,16 @@ body {
   margin-top: 40px;
   padding: 5px 20px ;
   border-radius: 5px;
-  background: linear-gradient(180deg, #ffba24, #ea563c);
-  /* Fundo elegante com gradiente */
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), -4px -4px 18px rgba(244, 241, 214, 0.3);
-  /* Efeito de elevação suave */
-  border: none;
-  /* Remove a borda padrão */
+  background: transparent;
+  border: 1px solid  #ffba24;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  /* Mostra que o botão é clicável */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-size: 20px;
   font-family: "Roboto Mono", serif;
-  color: #333;
+  color: #ffba24;
   animation: tippy_pulse 1.5s ease-in-out infinite;
 }
 

@@ -17,7 +17,6 @@ const Piece = ({
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 }); // Posição da peça
   const [isDragging, setIsDragging] = useState(false); // Estado de arrasto
-  const [draggingStates, setDraggingStates] = useState([]);
 
 
   const pieceRef = useRef(null);
@@ -821,36 +820,27 @@ const Piece = ({
     setPosition({ x: newX, y: newY });
 
     const { top, left, width, height } = pieceRef.current.getBoundingClientRect();
-
-    // Obtemos a transformação do elemento pai, se houver
     const groupElement = pieceRef.current.parentElement;
     const transform = window.getComputedStyle(groupElement).transform;
 
     let centerX, centerY;
-
     const hasYOne = shapes[shape].some((point) => point.y === 1);
 
     if (hasYOne) {
-      const matrix = new DOMMatrix(transform); // Cria a matriz de transformação
-      centerX = left + width / 2 + 45 + matrix.e;  // Ajusta o centro considerando a transformação
+      const matrix = new DOMMatrix(transform);
+      centerX = left + width / 2 + 45 + matrix.e;
       centerY = top + height / 2 - 15 + matrix.f;
     } else {
-      // Caso não tenha transformação, usamos as coordenadas do bounding rect
-      const matrix = new DOMMatrix(transform); // Cria a matriz de transformação
+      const matrix = new DOMMatrix(transform);
       centerX = left + width / 2 + matrix.e;
       centerY = top + height / 2 + matrix.f;
     }
-
-    // Aplique aqui qualquer ajuste extra para corrigir o deslocamento
-    // Por exemplo, você pode tentar uma compensação de pixels manual para corrigir
 
     onHover({
       center: { x: centerX, y: centerY },
       shape: shapes[shape],
     });
   };
-
-
 
   const handleMouseUp = () => {
     setIsDragging(false);
@@ -862,39 +852,82 @@ const Piece = ({
     }
   };
 
-  const handleDragStart = (index) => {
-    setDraggingStates((prev) => {
-      const updated = [...prev];
-      updated[index] = true; // Define como arrastando
-      return updated;
+  // Lógica para os eventos de toque
+  const handleTouchStart = (event) => {
+    const touch = event.touches[0]; // Pegando o primeiro toque
+    setIsDragging(true);
+    pieceRef.current.dragStartX = touch.clientX - position.x;
+    pieceRef.current.dragStartY = touch.clientY - position.y;
+  };
+
+  const handleTouchMove = (event) => {
+    if (!isDragging) return;
+
+    const touch = event.touches[0]; // Pegando o primeiro toque
+    const newX = touch.clientX - pieceRef.current.dragStartX;
+    const newY = touch.clientY - pieceRef.current.dragStartY;
+
+    setPosition({ x: newX, y: newY });
+
+    const { top, left, width, height } = pieceRef.current.getBoundingClientRect();
+    const groupElement = pieceRef.current.parentElement;
+    const transform = window.getComputedStyle(groupElement).transform;
+
+    let centerX, centerY;
+    const hasYOne = shapes[shape].some((point) => point.y === 1);
+
+    if (hasYOne) {
+      const matrix = new DOMMatrix(transform);
+      centerX = left + width / 2 + 45 + matrix.e;
+      centerY = top + height / 2 - 15 + matrix.f;
+    } else {
+      const matrix = new DOMMatrix(transform);
+      centerX = left + width / 2 + matrix.e;
+      centerY = top + height / 2 + matrix.f;
+    }
+
+    onHover({
+      center: { x: centerX, y: centerY },
+      shape: shapes[shape],
     });
   };
 
-  const handleDragEnd = (index) => {
-    setDraggingStates((prev) => {
-      const updated = [...prev];
-      updated[index] = false; // Define como não arrastando
-      return updated;
-    });
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+
+    if (onDrop) {
+      onDrop(index);
+    } else {
+      setPosition({ x: 0, y: 0 });
+    }
   };
 
 
   useEffect(() => {
+    // Adicionando eventos de mouse
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
 
+    // Adicionando eventos de toque
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleTouchEnd);
+    window.addEventListener("touchstart", handleTouchStart);
+
     return () => {
+      // Remover os eventos de mouse
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+
+      // Remover os eventos de toque
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("touchstart", handleTouchStart);
     };
   }, [isDragging]);
 
   return (
     <motion.div
-
       dragMomentum={false}
-
-
       initial={isNew ? { scale: 0.5 } : false}
       animate={{
         scale: isDragging ? 1 : 0.8,
@@ -904,8 +937,6 @@ const Piece = ({
         scale: 0.8,
         opacity: 0.7,
       }}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
       onMouseUp={handleMouseUp}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="svg-container"
