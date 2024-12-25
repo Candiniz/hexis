@@ -13,7 +13,6 @@ body {
   align-items: center;
   min-height: 100vh;
   font-family: "Roboto Mono", serif;
-  overflow: hidden;
 }
 
 
@@ -47,16 +46,12 @@ body {
 }
 
 .svg-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
+  width: 100px;
+  height: 100px;
 }
 
 .svg {
-  width: auto;
-  height: auto;
+
   overflow: visible;
   margin: auto;
 }
@@ -152,11 +147,18 @@ body {
 
 @media (max-width: 600px) {
   .piece_container {
-    position: absolute;
-    top: auto;
-    left: 10px;
-    bottom: 150px;
-    height: auto;
+    border: 1px solid red;
+    position: relative;
+    margin: 0;
+    width: 90vw;
+    max-width: 90vw;
+    height: 100px;
+  }
+
+  .svg-container {
+    width: 33%;
+    height: 100px;
+    display: inline-block;
   }
 
   .scoreboard {
