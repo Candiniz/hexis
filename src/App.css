@@ -26,7 +26,7 @@ body {
 }
 
 .boardDiv {
-  position: absolute;
+  position: fixed;
   margin-bottom: 20px;
   transition: all 0.1s ease-in-out;
 }
@@ -147,11 +147,12 @@ body {
 
 @media (max-width: 600px) {
   .piece_container {
-    border: 1px solid red;
-    position: relative;
-    margin: 0;
-    width: 90vw;
-    max-width: 90vw;
+    position: fixed;
+    top: auto;
+    bottom: 70px;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
     height: 100px;
   }
 
@@ -162,7 +163,7 @@ body {
   }
 
   .scoreboard {
-    position: absolute;
+    position: fixed;
     display: flex !important;
     flex-direction: row !important;
     align-items: center;
