@@ -487,9 +487,10 @@ const Board = () => {
 
         // Ajusta as coordenadas para eventos de toque, se necessário
         const isTouchEvent = center.identifier !== undefined; // Verifica se é um evento de toque
+        console.log(isTouchEvent)
         const adjustedCenter = {
-            x: isTouchEvent ? center.clientX || center.x : center.x,
-            y: isTouchEvent ? center.clientY || center.y : center.y,
+            x: center.x + window.scrollX,
+            y: center.y + window.scrollY,
         };
 
         const centralTriangle = boardTriangles.find(({ rect }) => {
