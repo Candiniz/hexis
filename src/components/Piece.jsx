@@ -856,9 +856,10 @@ const Piece = ({
     setActiveTouchId(touch.identifier);
     setIsDragging(true);
 
+    // Calculando a posição inicial da peça em relação à viewport
     const rect = pieceRef.current.getBoundingClientRect();
-    pieceRef.current.dragStartX = touch.clientX - rect.left;
-    pieceRef.current.dragStartY = touch.clientY - rect.top;
+    pieceRef.current.dragStartX = touch.clientX - rect.left;  // Posição X em relação à peça
+    pieceRef.current.dragStartY = touch.clientY - rect.top;   // Posição Y em relação à peça
 
     event.preventDefault(); // Previne comportamentos indesejados, como scroll
   };
@@ -871,11 +872,13 @@ const Piece = ({
     );
     if (!touch) return;
 
+    // Calculando a nova posição com base no toque
     const newX = touch.clientX - pieceRef.current.dragStartX;
     const newY = touch.clientY - pieceRef.current.dragStartY;
 
     setPosition({ x: newX, y: newY });
 
+    // Pegando a posição do elemento para calcular o centro da peça
     const { top, left, width, height } = pieceRef.current.getBoundingClientRect();
     const groupElement = pieceRef.current.parentElement;
     const transform = window.getComputedStyle(groupElement).transform;
@@ -884,13 +887,15 @@ const Piece = ({
     const centerX = left + width / 2 + matrix.e;
     const centerY = top + height / 2 + matrix.f;
 
-    event.preventDefault()
+    event.preventDefault(); // Previne rolagem durante o arrasto
 
+    // Enviando as coordenadas ajustadas para o evento de hover
     onHover({
       center: { x: centerX, y: centerY },
       shape: shapes[shape],
     });
   };
+
 
   const handleTouchEnd = (event) => {
     const endedTouch = Array.from(event.changedTouches).find(
