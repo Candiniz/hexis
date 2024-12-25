@@ -953,7 +953,6 @@ const Piece = ({
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      onTouchCancel={handleTouchEnd}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="svg-container"
       ref={pieceRef}

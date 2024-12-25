@@ -245,6 +245,7 @@ body {
 }
 
 .logo_main {
+  margin-top: 40px;
   width: 500px;
   max-width: 100%;
 }

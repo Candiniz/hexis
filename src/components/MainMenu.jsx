@@ -184,7 +184,7 @@ function MainMenu() {
     return (
         <div className="main-menu">
 
-            <img ref={imageRef} alt="Logo" src="/logo_hexis.png" className="logo_main" />
+            <img ref={imageRef} alt="Logo" src="/logo_hexis2.png" className="logo_main" />
             <div
                 ref={popperRef}
                 style={{
