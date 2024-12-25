@@ -884,6 +884,8 @@ const Piece = ({
     const centerX = left + width / 2 + matrix.e;
     const centerY = top + height / 2 + matrix.f;
 
+    event.preventDefault()
+
     onHover({
       center: { x: centerX, y: centerY },
       shape: shapes[shape],
@@ -938,7 +940,11 @@ const Piece = ({
       }}
       onMouseUp={handleMouseUp}
       onMouseDown={handleMouseDown}
-      onTouchStart={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="svg-container"
       ref={pieceRef}
