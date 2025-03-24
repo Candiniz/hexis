@@ -1,5 +1,11 @@
 # HEXIS!
 
+<p align="center">
+  <img src="https://media2.giphy.com/media/eNAsjO55tPbgaor7ma/giphy.gif?cid=6c09b9526zav4uykhu5rebxit3k84hosqpoh5plxwbcetc7z&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s" width="70" style="vertical-align: middle; display: inline-block;">
+  <img src="https://i.pinimg.com/originals/ac/8f/61/ac8f610d390a504026b5e7bd2b67818f.gif" width="90" style="vertical-align: bottom; display: inline-block;">
+  <img src="https://media2.giphy.com/media/ln7z2eWriiQAllfVcn/giphy.gif?cid=6c09b9523j00k4nr489c9yszsue2ckfmt4xqxdncj6zno00d&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s" width="80" style="vertical-align: middle; display: inline-block;">
+</p>
+
 HEXIS! é um projeto que nasceu do desejo de me auto desafiar e explorar novos horizontes no desenvolvimento de aplicações interativas. Inspirado no jogo mobile **Trigon**, da IEC Games, decidi recriar sua essência por meio de uma abordagem de clonagem por observação. Esse método exigiu que eu confiasse exclusivamente na minha experiência como jogador para projetar funcionalidades e mecânicas, sem qualquer acesso ao código-fonte do jogo original. O objetivo era não apenas replicar a jogabilidade, mas também compreender e implementar os fundamentos lógicos e visuais que tornam **Trigon** tão cativante. 
 
 ## 🎮 Demonstração
