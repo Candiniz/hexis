@@ -1,6 +1,6 @@
-# HEXIS
+# HEXIS!
 
-Hexis é um projeto que nasceu do desejo de me auto desafiar e explorar novos horizontes no desenvolvimento de aplicações interativas. Inspirado no jogo mobile **Trigon**, da IEC Games, decidi recriar sua essência por meio de uma abordagem de clonagem por observação. Esse método exigiu que eu confiasse exclusivamente na minha experiência como jogador para projetar funcionalidades e mecânicas, sem qualquer acesso ao código-fonte do jogo original. O objetivo era não apenas replicar a jogabilidade, mas também compreender e implementar os fundamentos lógicos e visuais que tornam **Trigon** tão cativante. 
+HEXIS! é um projeto que nasceu do desejo de me auto desafiar e explorar novos horizontes no desenvolvimento de aplicações interativas. Inspirado no jogo mobile **Trigon**, da IEC Games, decidi recriar sua essência por meio de uma abordagem de clonagem por observação. Esse método exigiu que eu confiasse exclusivamente na minha experiência como jogador para projetar funcionalidades e mecânicas, sem qualquer acesso ao código-fonte do jogo original. O objetivo era não apenas replicar a jogabilidade, mas também compreender e implementar os fundamentos lógicos e visuais que tornam **Trigon** tão cativante. 
 
 ## 🎮 Demonstração
 
@@ -27,7 +27,7 @@ O jogo pode ser experimentado online:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/hexis.git
+   git clone https://github.com/Candiniz/hexis.git
    ```
 2. Acesse a pasta do projeto:
    ```bash
