@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+# HEXIS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Hexis é um projeto que nasceu do desejo de me auto desafiar e explorar novos horizontes no desenvolvimento de aplicações interativas. Inspirado no jogo mobile **Trigon**, da IEC Games, decidi recriar sua essência por meio de uma abordagem de clonagem por observação. Esse método exigiu que eu confiasse exclusivamente na minha experiência como jogador para projetar funcionalidades e mecânicas, sem qualquer acesso ao código-fonte do jogo original. O objetivo era não apenas replicar a jogabilidade, mas também compreender e implementar os fundamentos lógicos e visuais que tornam **Trigon** tão cativante. 
 
-## Available Scripts
+## 🎮 Demonstração
 
-In the project directory, you can run:
+O jogo pode ser experimentado online:
+🔗 **[Jogue HEXIS agora](https://hexis.vercel.app/)**
 
-### `npm start`
+## 🚀 Tecnologias Utilizadas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **React.js** - Biblioteca principal para a interface
+- **JavaScript (ES6+)** - Manipulação de lógica e interação
+- **SVG** - Renderização dos elementos visuais do tabuleiro
+- **CSS** - Estilização responsiva e fluida
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Desafios e Aprendizados
 
-### `npm test`
+- **Construção do tabuleiro com SVGs:** 
+  - Criar cada triângulo de forma precisa para compor a interface interativa.
+- **Cálculos geométricos complexos:**
+  - Determinar as coordenadas de cada peça para garantir um encaixe perfeito.
+- **Interação entre peças e tabuleiro:**
+  - Implementação de regras de jogo e reconhecimento de posição utilizando manipulação do DOM no React.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📂 Como Rodar Localmente
 
-### `npm run build`
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/hexis.git
+   ```
+2. Acesse a pasta do projeto:
+   ```bash
+   cd hexis
+   ```
+3. Instale as dependências:
+   ```bash
+   npm install
+   ```
+4. Execute o projeto:
+   ```bash
+   npm start
+   ```
+5. Acesse **http://localhost:3000** no navegador.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🤝 Contribuição
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Sinta-se à vontade para contribuir com melhorias e novas funcionalidades! Para isso:
+1. Fork o repositório
+2. Crie uma nova branch:
+   ```bash
+   git checkout -b minha-melhoria
+   ```
+3. Faça suas modificações e commite:
+   ```bash
+   git commit -m "Melhoria: Adicionei nova funcionalidade X"
+   ```
+4. Envie para o repositório remoto:
+   ```bash
+   git push origin minha-melhoria
+   ```
+5. Abra um Pull Request 🚀
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📜 Licença
 
-### `npm run eject`
+Este projeto é de uso pessoal e educativo. Caso tenha interesse em utilizá-lo, entre em contato comigo!
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+💡 **Hexis representa mais do que um simples jogo**: é uma jornada de aprendizado, criatividade e superação. Obrigado por conferir este projeto! 😊
